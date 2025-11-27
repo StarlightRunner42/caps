@@ -1,0 +1,2122 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>LYDO OFFICE</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- Favicon -->
+		<link rel="icon" href="/assets/images/silay.png" type="image/x-icon">
+		<!-- Google Fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,800" rel="stylesheet">
+		<!-- CSS Frameworks -->
+		<link rel="stylesheet" href="/bower_components/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/assets/icon/feather/css/feather.css">
+		<link rel="stylesheet" href="/assets/css/style.css">
+		<link rel="stylesheet" href="/assets/css/pwd.css">
+		<link rel="stylesheet" href="/assets/css/jquery.mCustomScrollbar.css">
+		<!-- DataTables CSS -->
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+	</head>
+	<body> 
+		<!-- Pre-loader start -->
+		<div class="theme-loader">
+			<div class="ball-scale">
+				<div class='contain'>
+					<div class="ring">
+						<div class="frame"></div>
+					</div>
+					<div class="ring">
+						<div class="frame"></div>
+					</div>
+					<div class="ring">
+						<div class="frame"></div>
+					</div>
+					<div class="ring">
+						<div class="frame"></div>
+					</div>
+					<div class="ring">
+						<div class="frame"></div>
+					</div>
+					<div class="ring">
+						<div class="frame"></div>
+					</div>
+					<div class="ring">
+						<div class="frame"></div>
+					</div>
+					<div class="ring">
+						<div class="frame"></div>
+					</div>
+					<div class="ring">
+						<div class="frame"></div>
+					</div>
+					<div class="ring">
+						<div class="frame"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Pre-loader end -->
+		<div id="pcoded" class="pcoded">
+			<div class="pcoded-overlay-box"></div>
+			<div class="pcoded-container navbar-wrapper">
+				<nav class="navbar header-navbar pcoded-header">
+					<div class="navbar-wrapper">
+						<div class="navbar-logo">
+							<a class="mobile-menu" id="mobile-collapse" href="#!">
+								<i class="feather icon-menu"></i>
+							</a>
+							<a href="">
+								<a href="#" class="img-fluid">YOUTH</a>
+							</a>
+							<a class="mobile-options">
+								<i class="feather icon-more-horizontal"></i>
+							</a>
+						</div>
+						<div class="navbar-container container-fluid">
+							<ul class="nav-left">
+								<li class="header-search">
+									<div class="main-search morphsearch-search">
+										<div class="input-group">
+											<span class="input-group-addon search-close">
+												<i class="feather icon-x"></i>
+											</span>
+											<input type="text" class="form-control" placeholder="Search...">
+											<span class="input-group-addon search-btn">
+												<i class="feather icon-search"></i>
+											</span>
+										</div>
+									</div>
+								</li>
+								<li>
+									<a href="#!" onclick="javascript:toggleFullScreen()">
+										<i class="feather icon-maximize full-screen"></i>
+									</a>
+								</li>
+								<li>
+									<a href="/youth-form" class="btn btn-primary rounded" id="addSeniorBtn" target="_blank">
+										<i class="feather icon-user-plus"></i>ADD LYDO </a>
+								</li>
+							</ul>
+							<ul class="nav-right"></ul>
+							<ul class="nav-right">
+								<li class="user-profile header-notification">
+									<div class="dropdown-primary dropdown">
+										<div class="dropdown-toggle" data-toggle="dropdown">
+											
+											<i class="feather icon-chevron-down"></i>
+										</div>
+										<ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+											<li>
+												<a href="/logout">
+													<i class="feather icon-log-out"></i> Logout </a>
+											</li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+				<div class="pcoded-main-container">
+					<div class="pcoded-wrapper">
+						<nav class="pcoded-navbar">
+							<div class="pcoded-inner-navbar main-menu">
+								<div class="pcoded-navigatio-lavel">Navigation</div>
+								<ul class="pcoded-item pcoded-left-item">
+									<li class="pcoded-hasmenu active pcoded-trigger">
+										<a href="javascript:void(0)">
+											<span class="pcoded-micon">
+												<i class="feather icon-home"></i>
+											</span>
+											<span class="pcoded-mtext">Dashboard</span>
+										</a>
+										<ul class="pcoded-submenu">
+											<li class="active">
+												<a href="/index-youth">
+													<span class="">LYDO</span>
+												</a>
+											</li>
+											<li class="">
+												<a href="/Youth">
+													<span class="">LYDO TABLE</span>
+												</a>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+						</nav>
+						<div class="pcoded-content">
+							<div class="pcoded-inner-content">
+								<div class="main-body">
+									<div class="page-wrapper">
+
+										<div class="container">
+											<h1>LYDO TABLE</h1>
+											<div class="filter-container">
+												<div class="filter-group">
+													<label for="barangay-filter">Barangay:</label>
+													<select id="barangay-filter" class="form-control">
+														<option value="">Select Barangay</option>
+														<!-- Populate options with JavaScript -->
+													</select>
+												</div>
+												<div class="filter-group">
+													<label for="purok-filter">Purok:</label>
+													<select id="purok-filter" class="form-control" disabled>
+														<option value="">First select a Barangay</option>
+													</select>
+												</div>
+												<!-- Status Filter -->
+												<div class="filter-group" style="margin-left: 12px;">
+													<label for="status-filter">Status:</label>
+													<select id="status-filter" class="form-control">
+														<option value="active">Active Only</option>
+														<option value="archived">Archived Only</option>
+														<option value="all">All Records</option>
+													</select>
+												</div>
+												<!-- Generate Report Button -->
+												<div class="filter-group" style="margin-left: 12px;">
+													<label>&nbsp;</label>
+													<button id="generateReportBtn" class="btn btn-info" type="button">
+														Generate Report
+													</button>
+												</div>
+											</div>
+											<div id="data-table-container">
+												<table id="example" class="display" style="width:100%;">
+													<thead>
+														<tr>
+															<th>
+																<input type="checkbox" id="select-all" aria-label="Select all rows">
+															</th>
+															<th>Name</th>
+															<th>Age</th>
+															<th>Barangay</th>
+															<th>Purok</th>
+															<th>Employment status</th>
+															<th>Status</th>
+															<th>Actions</th>
+														</tr>
+													</thead>
+													<tbody id="pwd-table-body"><% if (youths && youths.length > 0) { %><% youths.forEach((youth, index) => { %> <tr>
+															<td>
+																<input type="checkbox" class="row-checkbox" value="<%= youth._id || youth.id %>" aria-label="Select row"
+																	data-phone="<%= youth.contact || '' %>"
+																	data-name="<%= youth.first_name + ' ' + youth.last_name %>"
+																	data-first-name="<%= youth.first_name || '' %>"
+																	data-middle-name="<%= youth.middle_name || '' %>"
+																	data-last-name="<%= youth.last_name || '' %>"
+																	data-barangay="<%= youth.barangay || '' %>"
+																	data-purok="<%= youth.purok || '' %>"
+																	data-record-id="<%= youth._id || youth.id %>">
+															</td>
+															<td><%= youth.first_name %> <%= youth.middle_name %> <%= youth.last_name %> </td>
+															<td><%= youth.age %> </td>
+															<td><%= youth.barangay %> </td>
+															<td><%= youth.purok %> </td>
+															<td><%= youth.employment_status %> </td>
+															<td>
+																<span class="badge <%= (youth.status === 'Archived') ? 'badge-secondary' : 'badge-success' %>">
+																	<%= youth.status || 'Active' %>
+																</span>
+															</td>
+															<td>
+																<div class="action-container">
+																	<button class="action  view-btn" aria-label="View" data-toggle="modal" data-target="#viewModal"
+																		data-first-name="<%= youth.first_name %>"
+																		data-middle-name="<%= youth.middle_name %>"
+																		data-last-name="<%= youth.last_name %>"
+																		data-contact="<%= youth.contact %>"
+																		data-birthday="<%= youth.birthday.toISOString().split('T')[0] %>"
+																		data-age="<%= youth.age %>"
+																		data-gender="<%= youth.gender %>"
+																		data-place-of-birth="<%= youth.place_of_birth %>"
+																		data-education-level="<%= youth.education_level %>"
+																		data-registered-sk="<%= youth.registered_sk %>"
+																		data-voted-sk="<%= youth.voted_sk %>"
+																		data-registered-national="<%= youth.registered_national %>"
+																		data-employment-status="<%= youth.employment_status %>"
+																		data-employment-category="<%= youth.employment_category %>"
+																		data-employment-type="<%= youth.employment_type %>"
+																		data-assembly="<%= youth.Assembly %>"
+																		data-sk-times="<%= youth.sk_times %>"
+																		data-reason="<%= youth.reason %>"
+																		data-youth-classification="<%= JSON.stringify(youth.youth_classification || []) %>"
+																		data-youth-classification-other="<%= youth.youth_classification_other || '' %>"
+																		data-youth-age-group="<%= JSON.stringify(youth.youth_age_group || []) %>"
+																		data-youth-age-group-other="<%= youth.youth_age_group_other || '' %>"
+																		data-edited-by="<%= (youth.edit_log && youth.edit_log.edited_by) ? youth.edit_log.edited_by : '' %>"
+																		data-edited-at="<%= (youth.edit_log && youth.edit_log.edited_at) ? new Date(youth.edit_log.edited_at).toISOString() : '' %>">
+																		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+																			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+																			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+																		</svg>
+																	</button>
+
+																	<button class="action action-edit edit-btn" aria-label="Edit" data-toggle="modal" data-target="#editModal"
+																		data-youth-id="<%= youth._id %>"
+																		data-first-name="<%= youth.first_name %>"
+																		data-middle-name="<%= youth.middle_name %>"
+																		data-last-name="<%= youth.last_name %>"
+																		data-barangay="<%= youth.barangay %>"
+																		data-purok="<%= youth.purok %>"
+																		data-contact="<%= youth.contact %>"
+																		data-birthday="<%= youth.birthday ? (youth.birthday.toISOString ? youth.birthday.toISOString().split('T')[0] : new Date(youth.birthday).toISOString().split('T')[0]) : '' %>"
+																		data-age="<%= youth.age %>"
+																		data-gender="<%= youth.gender %>"
+																		data-place-of-birth="<%= youth.place_of_birth %>"
+																		data-education-level="<%= youth.education_level %>"
+																		data-registered-sk="<%= youth.registered_sk %>"
+																		data-voted-sk="<%= youth.voted_sk %>"
+																		data-registered-national="<%= youth.registered_national %>"
+																		data-employment-status="<%= youth.employment_status %>"
+																		data-employment-category="<%= youth.employment_category %>"
+																		data-employment-type="<%= youth.employment_type %>"
+																		data-assembly="<%= youth.Assembly %>"
+																		data-sk-times="<%= youth.sk_times %>"
+																		data-reason="<%= youth.reason %>"
+																		data-youth-classification="<%= JSON.stringify(youth.youth_classification || []) %>"
+																		data-youth-classification-other="<%= youth.youth_classification_other || '' %>"
+																		data-youth-age-group="<%= JSON.stringify(youth.youth_age_group || []) %>"
+																		data-youth-age-group-other="<%= youth.youth_age_group_other || '' %>">
+																		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+																			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+																		</svg>
+																	</button>
+																	<button class="action action-archive archive-btn" aria-label="Archive" 
+																		data-youth-id="<%= youth._id || youth.id %>"
+																		data-status="<%= youth.status || 'Active' %>"
+																		title="<%= (youth.status === 'Archived') ? 'Unarchive' : 'Archive' %>">
+																		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+																			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+																		</svg>
+																	</button>
+																</div>
+																
+																<!-- View Modal -->
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewModalTitle">
+                    <span id="displayFirstName"></span> 
+                    <span id="displayMiddleName"></span> 
+                    <span id="displayLastName"></span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Top Row: Personal Info + Contact Info -->
+                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <!-- Left - Personal Information -->
+                    <fieldset style="flex: 1; margin-right: 10px;">
+                        <legend>PERSONAL INFORMATION</legend>
+                        <p>
+                            <strong>Contact:</strong>
+                            <span id="displayContact"></span>
+                        </p>
+                        <p>
+                            <strong>Birthday:</strong>
+                            <span id="displayBirthday"></span> ( <span id="displayAge"></span> years old)
+                        </p>
+                        <p>
+                            <strong>Gender:</strong>
+                            <span id="displayGender"></span>
+                        </p>
+                        <p>
+                            <strong>Place of Birth:</strong>
+                            <span id="displayPlaceOfBirth"></span>
+                        </p>
+                    </fieldset>
+                    <!-- Right - Education Information -->
+                    <fieldset style="flex: 1; margin-left: 10px;">
+                        <legend>EDUCATIONAL INFORMATION</legend>
+                        <p>
+                            <strong>Education Level:</strong>
+                            <span id="displayEducationLevel"></span>
+                        </p>
+                        <p>
+                            <strong>SK Voter:</strong>
+                            <span id="displaySkVoter"></span>
+                        </p>
+                        <p id="displaySkVoted" style="display: none;">
+                            <strong>Voted Last SK:</strong>
+                            <span id="displaySkVotedStatus"></span>
+                        </p>
+                        <p>
+                            <strong>National Voter:</strong>
+                            <span id="displayNationalVoter"></span>
+                        </p>
+                        <p>
+                            <strong>Employment Status:</strong>
+                            <span id="displayEmploymentStatus"></span>
+                        </p>
+                        <p id="displayEmploymentCategory" style="display: none;">
+                            <strong>Employment Category:</strong>
+                            <span id="displayEmploymentCategoryValue"></span>
+                        </p>
+                        <p id="displayEmploymentType" style="display: none;">
+                            <strong>Employment Type:</strong>
+                            <span id="displayEmploymentTypeValue"></span>
+                        </p>
+                    </fieldset>
+                </div>
+                <!-- Bottom Row: Youth Classification + Age Group -->
+                <div style="display: flex; justify-content: space-between;">
+                    <!-- Left - Youth Classification -->
+                    <fieldset style="flex: 1; margin-right: 10px;">
+                        <legend>YOUTH CLASSIFICATION</legend>
+                        <div id="displayYouthClassification"></div>
+                    </fieldset>
+                    <!-- Right - Youth Age Group -->
+                    <fieldset style="flex: 1; margin-left: 10px;">
+                        <legend>YOUTH AGE GROUP</legend>
+                        <div id="displayYouthAgeGroup"></div>
+                    </fieldset>
+                </div>
+                <!-- KK Assembly Information -->
+                <div style="margin-top: 20px;">
+                    <fieldset>
+                        <legend>KK ASSEMBLY INFORMATION</legend>
+                        <p>
+                            <strong>Attended KK Assembly:</strong>
+                            <span id="displayAssemblyAttended"></span>
+                        </p>
+                        <div id="displayAssemblyTimes" style="display: none;">
+                            <p>
+                                <strong>Times Attended:</strong>
+                                <span id="displayAssemblyTimesValue"></span>
+                            </p>
+                        </div>
+                        <div id="displayAssemblyReason" style="display: none;">
+                            <p>
+                                <strong>Reason for Not Attending:</strong>
+                                <span id="displayAssemblyReasonValue"></span>
+                            </p>
+                        </div>
+                    </fieldset>
+                </div>
+                
+                <!-- Edit Log Information -->
+                <div style="margin-top: 20px;">
+                    <fieldset>
+                        <legend>EDIT HISTORY</legend>
+                        <p>
+                            <strong>Last Edited By:</strong>
+                            <span id="displayEditedBy">N/A</span>
+                        </p>
+                        <p>
+                            <strong>Last Edited At:</strong>
+                            <span id="displayEditedAt">N/A</span>
+                        </p>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="modal-footer flex-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                
+            </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalTitle">Edit Resident Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="editYouthForm">
+                    <input type="hidden" id="editYouthId" name="youthId">
+                    
+                    <!-- Top Row: Personal Info + Educational Info -->
+                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <!-- Left - Personal Information -->
+                    <fieldset style="flex: 1; margin-right: 10px;">
+                        <legend>PERSONAL INFORMATION</legend>
+                            <div class="form-group">
+                                <label for="editFirstName">First Name:</label>
+                                <input type="text" class="form-control" id="editFirstName" name="first_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editMiddleName">Middle Name:</label>
+                                <input type="text" class="form-control" id="editMiddleName" name="middle_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="editLastName">Last Name:</label>
+                                <input type="text" class="form-control" id="editLastName" name="last_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editContact">Contact:</label>
+                                <input type="text" class="form-control" id="editContact" name="contact" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editBirthday">Birthday:</label>
+                                <input type="date" class="form-control" id="editBirthday" name="birthday" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editAge">Age:</label>
+                                <input type="number" class="form-control" id="editAge" name="age" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editGender">Gender:</label>
+                                <select class="form-control" id="editGender" name="gender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                    <option value="Prefer not to say">Prefer not to say</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editPlaceOfBirth">Place of Birth:</label>
+                                <input type="text" class="form-control" id="editPlaceOfBirth" name="place_of_birth" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editBarangay">Barangay:</label>
+                                <input type="text" class="form-control" id="editBarangay" name="barangay" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editPurok">Purok:</label>
+                                <input type="text" class="form-control" id="editPurok" name="purok" required>
+                            </div>
+                    </fieldset>
+                        
+                        <!-- Right - Educational Information -->
+                    <fieldset style="flex: 1; margin-left: 10px;">
+                        <legend>EDUCATIONAL INFORMATION</legend>
+                            <div class="form-group">
+                                <label for="editEducationLevel">Education Level:</label>
+                                <select class="form-control" id="editEducationLevel" name="education_level" required>
+                                    <option value="">Select Education Level</option>
+                                    <option value="Elementary Level">Elementary Level</option>
+                                    <option value="Elementary Graduate">Elementary Graduate</option>
+                                    <option value="High School Graduate">High School Graduate</option>
+                                    <option value="College Level">College Level</option>
+                                    <option value="College Graduate">College Graduate</option>
+                                    <option value="Post Graduate">Post Graduate</option>
+                                    <option value="Vocational">Vocational</option>
+                                    <option value="Not Attended School">Not Attended School</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editRegisteredSk">SK Voter:</label>
+                                <select class="form-control" id="editRegisteredSk" name="registered_sk" required>
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="editSkVotedGroup" style="display: none;">
+                                <label for="editVotedSk">Voted Last SK:</label>
+                                <select class="form-control" id="editVotedSk" name="voted_sk">
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editRegisteredNational">National Voter:</label>
+                                <select class="form-control" id="editRegisteredNational" name="registered_national" required>
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editEmploymentStatus">Employment Status:</label>
+                                <select class="form-control" id="editEmploymentStatus" name="employment_status" required>
+                                    <option value="">Select Employment Status</option>
+                                    <option value="Employee">Employee</option>
+                                    <option value="Unemployed">Unemployed</option>
+                                    <option value="Self-employed">Self-employed</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="editEmploymentCategoryGroup" style="display: none;">
+                                <label for="editEmploymentCategory">Employment Category:</label>
+                                <select class="form-control" id="editEmploymentCategory" name="employment_category">
+                                    <option value="">Select Category</option>
+                                    <option value="Government">Government</option>
+                                    <option value="Private">Private</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="editEmploymentTypeGroup" style="display: none;">
+                                <label for="editEmploymentType">Employment Type:</label>
+                                <select class="form-control" id="editEmploymentType" name="employment_type">
+                                    <option value="">Select Type</option>
+                                    <option value="Permanent/Regular">Permanent/Regular</option>
+                                    <option value="Seasonal">Seasonal</option>
+                                    <option value="Casual">Casual</option>
+                                    <option value="Emergency">Emergency</option>
+                                </select>
+                            </div>
+                    </fieldset>
+                </div>
+                    
+                <!-- Bottom Row: Youth Classification + Age Group -->
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <!-- Left - Youth Classification -->
+                    <fieldset style="flex: 1; margin-right: 10px;">
+                        <legend>YOUTH CLASSIFICATION</legend>
+                            <div class="form-group">
+                                <label>Select Classification(s):</label>
+                                <div class="checkbox-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editYouthClassification1" name="youth_classification" value="In School Youth">
+                                        <label class="form-check-label" for="editYouthClassification1">In School Youth</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editYouthClassification2" name="youth_classification" value="Out of School Youth">
+                                        <label class="form-check-label" for="editYouthClassification2">Out of School Youth</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editYouthClassification3" name="youth_classification" value="Youth w/Specific Needs">
+                                        <label class="form-check-label" for="editYouthClassification3">Youth w/Specific Needs</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editYouthClassification4" name="youth_classification" value="Other">
+                                        <label class="form-check-label" for="editYouthClassification4">Other</label>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="editYouthClassificationOtherGroup" style="display: none;">
+                                    <label for="editYouthClassificationOther">Other (specify):</label>
+                                    <input type="text" class="form-control" id="editYouthClassificationOther" name="youth_classification_other">
+                                </div>
+                            </div>
+                    </fieldset>
+                        
+                    <!-- Right - Youth Age Group -->
+                    <fieldset style="flex: 1; margin-left: 10px;">
+                        <legend>YOUTH AGE GROUP</legend>
+                            <div class="form-group">
+                                <label>Select Age Group(s):</label>
+                                <div class="checkbox-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editYouthAgeGroup1" name="youth_age_group" value="Child Youth (15−17 yrs old)">
+                                        <label class="form-check-label" for="editYouthAgeGroup1">Child Youth (15−17 yrs old)</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editYouthAgeGroup2" name="youth_age_group" value="Core Youth (18−24 yrs old)">
+                                        <label class="form-check-label" for="editYouthAgeGroup2">Core Youth (18−24 yrs old)</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editYouthAgeGroup3" name="youth_age_group" value="Young Adult (15−30 yrs old)">
+                                        <label class="form-check-label" for="editYouthAgeGroup3">Young Adult (15−30 yrs old)</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="editYouthAgeGroup4" name="youth_age_group" value="Other">
+                                        <label class="form-check-label" for="editYouthAgeGroup4">Other</label>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="editYouthAgeGroupOtherGroup" style="display: none;">
+                                    <label for="editYouthAgeGroupOther">Other (specify):</label>
+                                    <input type="text" class="form-control" id="editYouthAgeGroupOther" name="youth_age_group_other">
+                                </div>
+                            </div>
+                    </fieldset>
+                </div>
+                    
+                <!-- KK Assembly Information -->
+                <div style="margin-top: 20px;">
+                    <fieldset>
+                        <legend>KK ASSEMBLY INFORMATION</legend>
+                            <div class="form-group">
+                                <label for="editAssembly">Attended KK Assembly:</label>
+                                <select class="form-control" id="editAssembly" name="Assembly" required>
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                        </div>
+                            <div class="form-group" id="editAssemblyTimesGroup" style="display: none;">
+                                <label for="editSkTimes">Times Attended:</label>
+                                <select class="form-control" id="editSkTimes" name="sk_times">
+                                    <option value="">Select</option>
+                                    <option value="1-2">1-2</option>
+                                    <option value="3-4">3-4</option>
+                                    <option value="5+">5+</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="editAssemblyReasonGroup" style="display: none;">
+                                <label for="editReason">Reason for Not Attending:</label>
+                                <select class="form-control" id="editReason" name="reason">
+                                    <option value="">Select</option>
+                                    <option value="No KK Assembly Meeting">No KK Assembly Meeting</option>
+                                    <option value="Not interested to attend">Not interested to attend</option>
+                                </select>
+                        </div>
+                    </fieldset>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveChangesBtn">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+															</td>
+														</tr><% }) %><% } else { %> <tr>
+															<td colspan="5">No youth data found.</td>
+														</tr><% } %> </tbody>
+												</table>
+												<!-- Button to open SMS modal for selected rows -->
+												<div class="mt-3">
+													<button id="openSmsForSelected" class="btn btn-success" disabled>
+														<i data-feather="message-circle"></i> Send SMS to selected
+													</button>
+													<button id="viewSmsHistoryBtn" class="btn btn-info ml-2">
+														<i data-feather="clock"></i> View SMS History
+													</button>
+												</div>
+
+												
+											<!-- SMS Modal -->
+<div class="modal fade" id="assistanceModal" tabindex="-1" aria-labelledby="assistanceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assistanceModalLabel">
+                    <i data-feather="send" style="width: 20px; height: 20px;"></i> Send SMS
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="smsForm">
+                    <div class="mb-2">
+                        <label class="form-label">Recipients:</label>
+                        <div id="recipientsList" class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+                            <em>No recipients selected</em>
+                        </div>
+                    </div>
+
+                    <div class="sms-template">
+                        <label for="smsMessage" class="form-label">Message:</label>
+                        <textarea id="smsMessage" class="form-control" rows="4">Dear Youth,
+
+You are invited to participate in upcoming youth programs and activities:
+- Skills training & development
+- Youth leadership programs
+- Community service opportunities
+- Sports & cultural events
+
+Visit your local LYDO office for more information.
+
+Thank you!</textarea>
+                        <small class="text-muted">You can edit this message before sending</small>
+                    </div>
+
+                    <!-- Character Counter -->
+                    <div class="mb-3">
+                        <small class="text-muted">
+                            Characters: <span id="charCount">0</span>/160
+                        </small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i data-feather="x" style="width: 16px; height: 16px;"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-primary btn-send" id="sendSmsBtn">
+                    <i data-feather="send" style="width: 16px; height: 16px;"></i> Send SMS
+                </button>
+            </div>
+        </div>
+        </div>
+    </div>
+												
+												<!-- SMS History Modal -->
+												<div class="modal fade" id="smsHistoryModal" tabindex="-1" aria-labelledby="smsHistoryModalLabel" aria-hidden="true">
+													<div class="modal-dialog modal-dialog-centered modal-xl">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h5 class="modal-title" id="smsHistoryModalLabel">
+																	<i data-feather="clock"></i> SMS History
+																</h5>
+																<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																	<span aria-hidden="true">&times;</span>
+																</button>
+															</div>
+															<div class="modal-body">
+																<div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+																	<table class="table table-striped table-bordered table-hover">
+																		<thead class="table-dark" style="position: sticky; top: 0; z-index: 10;">
+																			<tr>
+																				<th>Date & Time</th>
+																				<th>Phone Number</th>
+																				<th>Name</th>
+																				<th>Barangay</th>
+																				<th>Purok</th>
+																				<th>Message</th>
+																				<th>Status</th>
+																			</tr>
+																		</thead>
+																		<tbody id="smsHistoryTableBody">
+																			<tr>
+																				<td colspan="7" class="text-center">Loading...</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+															</div>
+														</div>
+													</div>
+												</div>
+												
+												<div id="no-data-alert" class="alert alert-info text-center" style="display: none;"> No data found. </div>
+											</div>
+										</div>
+										<!-- Container div -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="styleSelector"></div>
+				</div>
+			</div>
+		</div>
+		<!-- Required Jquery -->
+		<script type="text/javascript" src="\bower_components\jquery\js\jquery.min.js"></script>
+		<script type="text/javascript" src="\bower_components\jquery-ui\js\jquery-ui.min.js"></script>
+		<script type="text/javascript" src="\bower_components\popper.js\js\popper.min.js"></script>
+		<script type="text/javascript" src="\bower_components\bootstrap\js\bootstrap.min.js"></script>
+		<!-- DataTables JS -->
+		<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+		<!-- Other scripts -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+		<script type="text/javascript" src="\bower_components\jquery-slimscroll\js\jquery.slimscroll.js"></script>
+		<script type="text/javascript" src="\bower_components\modernizr\js\modernizr.js"></script>
+		<script type="text/javascript" src="\bower_components\modernizr\js\css-scrollbars.js"></script>
+		<script type="text/javascript" src="\bower_components\chart.js\js\Chart.js"></script>
+		<script src="\assets\pages\widget\amchart\amcharts.js"></script>
+		<script src="\assets\pages\widget\amchart\serial.js"></script>
+		<script src="\assets\pages\widget\amchart\light.js"></script>
+		<script type="text/javascript" src="\assets\js\SmoothScroll.js"></script>
+		<script src="\assets\js\pcoded.min.js"></script>
+		<script src="\assets\js\jquery.mCustomScrollbar.concat.min.js"></script>
+		<script src="\assets\js\vartical-layout.min.js"></script>
+		<script type="text/javascript" src="\assets\pages\dashboard\analytic-dashboard.min.js"></script>
+		<script type="text/javascript" src="\assets\js\script.js"></script>
+		<script type="text/javascript" src="\assets\js\senior.js"></script>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+			gtag('config', 'UA-23581568-13');
+			$(document).ready(function() {
+				// Initialize DataTable only once
+				if ($.fn.dataTable.isDataTable('#example')) {
+					window.youthTable = $('#example').DataTable();
+				} else {
+					window.youthTable = $('#example').DataTable({
+						paging: true,
+						pageLength: 10,
+						lengthMenu: [5, 10, 25, 50, 100],
+						responsive: true,
+						columnDefs: [
+							{
+								targets: 0, // First column (checkbox column)
+								searchable: false,
+								orderable: false
+							}
+						],
+						order: [[1, 'asc']], // Sort by second column (Name) by default
+						rowCallback: function(row) {
+							if ($(row).hasClass('dt-empty')) {
+								$(row).hide();
+							}
+						}
+					});
+				}
+
+				// Select All functionality
+				$('#select-all').on('click', function() {
+					const isChecked = $(this).prop('checked');
+					const table = window.youthTable;
+					// Select/deselect all visible rows on current page
+					table.rows({ page: 'current' }).nodes().to$().find('.row-checkbox').prop('checked', isChecked);
+					// Update the SMS button state
+					const openSmsBtn = $('#openSmsForSelected');
+					if (openSmsBtn.length) {
+						const anyChecked = $('.row-checkbox:checked').length > 0;
+						openSmsBtn.prop('disabled', !anyChecked);
+					}
+				});
+
+				// Update select-all checkbox state when individual checkboxes change
+				$(document).on('change', '.row-checkbox', function() {
+					const table = window.youthTable;
+					const totalVisible = table.rows({ page: 'current' }).nodes().to$().find('.row-checkbox').length;
+					const checkedVisible = table.rows({ page: 'current' }).nodes().to$().find('.row-checkbox:checked').length;
+					$('#select-all').prop('checked', totalVisible > 0 && totalVisible === checkedVisible);
+				});
+
+				// Update select-all state when table is redrawn (pagination, filtering, etc.)
+				window.youthTable.on('draw', function() {
+					const table = window.youthTable;
+					const totalVisible = table.rows({ page: 'current' }).nodes().to$().find('.row-checkbox').length;
+					const checkedVisible = table.rows({ page: 'current' }).nodes().to$().find('.row-checkbox:checked').length;
+					$('#select-all').prop('checked', totalVisible > 0 && totalVisible === checkedVisible);
+				});
+
+				// Barangay/Purok dynamic filters
+				const barangaysData = <%- JSON.stringify(barangays) %>;
+				const barangaySelect = document.getElementById('barangay-filter');
+				const purokSelect = document.getElementById('purok-filter');
+				const statusFilter = document.getElementById('status-filter');
+				const table = window.youthTable;
+
+				// Set initial status filter value based on URL parameter
+				const urlParams = new URLSearchParams(window.location.search);
+				const statusParam = urlParams.get('status');
+				if (statusParam === 'all') {
+					statusFilter.value = 'all';
+				} else if (statusParam === 'archived') {
+					statusFilter.value = 'archived';
+				} else {
+					statusFilter.value = 'active';
+				}
+				
+				// Status filter change event handler
+				statusFilter.addEventListener('change', function() {
+					const selectedStatus = this.value;
+					const url = new URL(window.location.href);
+					
+					if (selectedStatus === 'active') {
+						url.searchParams.delete('status');
+					} else if (selectedStatus === 'archived') {
+						url.searchParams.set('status', 'archived');
+					} else {
+						url.searchParams.set('status', 'all');
+					}
+					
+					window.location.href = url.toString();
+				});
+
+				// Populate Barangay options dynamically
+				if (barangaysData && typeof barangaysData === 'object') {
+					Object.keys(barangaysData).forEach(function(barangay) {
+						const option = document.createElement('option');
+						option.value = barangay;
+						option.textContent = barangay;
+						barangaySelect.appendChild(option);
+					});
+				}
+
+				// Initialize purok dropdown as disabled
+				purokSelect.disabled = true;
+
+				// Barangay change: populate Purok and filter table
+				barangaySelect.addEventListener('change', function() {
+					const selectedBarangay = this.value;
+					purokSelect.innerHTML = '';
+
+					const defaultOption = document.createElement('option');
+					defaultOption.value = '';
+					defaultOption.textContent = selectedBarangay ? 'Select Purok' : 'First select a Barangay';
+					purokSelect.appendChild(defaultOption);
+
+					purokSelect.disabled = !selectedBarangay;
+
+					if (selectedBarangay && barangaysData[selectedBarangay]) {
+						const allOption = document.createElement('option');
+						allOption.value = 'all';
+						allOption.textContent = 'All Puroks';
+						purokSelect.appendChild(allOption);
+
+						barangaysData[selectedBarangay].forEach(function(purok) {
+							const option = document.createElement('option');
+							option.value = purok;
+							option.textContent = purok;
+							purokSelect.appendChild(option);
+						});
+					}
+
+					// Filter the table based on selected barangay (column index 3 after checkbox column)
+										table.columns(3).search(selectedBarangay || '').draw();
+										// Clear purok filter when barangay changes
+										table.columns(4).search('').draw();
+				});
+
+				// Purok change: filter table
+								purokSelect.addEventListener('change', function() {
+									const selectedPurok = this.value;
+									if (selectedPurok === 'all' || selectedPurok === '') {
+										table.columns(4).search('').draw();
+									} else {
+										table.columns(4).search(selectedPurok).draw();
+									}
+								});
+			});
+		</script>
+		<script>
+			// Convert EJS data to JavaScript object
+			const barangaysData = <%- JSON.stringify(barangays) %>;
+
+			document.addEventListener('DOMContentLoaded', function() {
+				const barangaySelect = document.getElementById('barangay-filter');
+				const purokSelect = document.getElementById('purok-filter');
+
+				// Populate Barangay options dynamically
+				if (barangaysData && typeof barangaysData === 'object') {
+					Object.keys(barangaysData).forEach(function(barangay) {
+						const option = document.createElement('option');
+						option.value = barangay;
+						option.textContent = barangay;
+						barangaySelect.appendChild(option);
+					});
+				}
+
+				// Get existing DataTable instance
+				var table = window.youthTable || $('#example').DataTable();
+
+				// Initialize purok dropdown as disabled
+				purokSelect.disabled = true;
+
+				// When Barangay changes, populate Purok and filter table
+				barangaySelect.addEventListener('change', function() {
+					const selectedBarangay = this.value;
+					purokSelect.innerHTML = '';
+
+					const defaultOption = document.createElement('option');
+					defaultOption.value = '';
+					defaultOption.textContent = selectedBarangay ? 'Select Purok' : 'First select a Barangay';
+					purokSelect.appendChild(defaultOption);
+
+					purokSelect.disabled = !selectedBarangay;
+
+					if (selectedBarangay && barangaysData[selectedBarangay]) {
+						const allOption = document.createElement('option');
+						allOption.value = 'all';
+						allOption.textContent = 'All Puroks';
+						purokSelect.appendChild(allOption);
+
+						barangaysData[selectedBarangay].forEach(function(purok) {
+							const option = document.createElement('option');
+							option.value = purok;
+							option.textContent = purok;
+							purokSelect.appendChild(option);
+						});
+					}
+
+					// Filter the table based on selected barangay (column index 3 after checkbox column)
+										table.columns(3).search(selectedBarangay || '').draw();
+										// Clear purok filter when barangay changes
+										table.columns(4).search('').draw();
+				});
+
+				// When Purok changes, filter table
+								purokSelect.addEventListener('change', function() {
+									const selectedPurok = this.value;
+									if (selectedPurok === 'all' || selectedPurok === '') {
+										table.columns(4).search('').draw();
+									} else {
+										table.columns(4).search(selectedPurok).draw();
+									}
+								});
+			});
+		</script>
+		
+		<!-- Action Buttons CSS -->
+		<style>
+			.action-container {
+				display: flex;
+				gap: 5px;
+				align-items: center;
+			}
+			
+			.action {
+				padding: 5px 8px;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+			}
+			
+			.action-primary {
+				background-color: #007bff;
+				color: white;
+			}
+			
+			.action-success {
+				background-color: #28a745;
+				color: white;
+			}
+			
+			.action:hover {
+				opacity: 0.8;
+			}
+			
+			.action svg {
+				width: 16px;
+				height: 16px;
+			}
+			.action-archive {
+				background: linear-gradient(135deg, #ed8936, #f6ad55);
+				color: white;
+			}
+			.action-archive:hover {
+				background: linear-gradient(135deg, #dd6b20, #ed8936);
+				box-shadow: 0 8px 25px rgba(237, 137, 54, 0.3);
+			}
+			.action-archive[data-status="Archived"] {
+				background: linear-gradient(135deg, #4a5568, #718096);
+			}
+			.action-archive[data-status="Archived"]:hover {
+				background: linear-gradient(135deg, #2d3748, #4a5568);
+				box-shadow: 0 8px 25px rgba(74, 85, 104, 0.3);
+			}
+		</style>
+		
+		<!-- Modal Population Script -->
+		<script>
+			$(document).ready(function() {
+				// Event listener for view youth buttons (support both `.view-btn` and existing `.view-youth-btn`)
+				$(document).on('click', '.view-btn, .view-youth-btn', function() {
+					const $button = $(this);
+
+					// Utility: try parsing a data-* attribute as JSON array, fallback gracefully
+					function parseAttrArray(attrName) {
+						const raw = $button.attr(attrName);
+						if (!raw) return [];
+						try {
+							return JSON.parse(raw);
+						} catch (e) {
+							const key = attrName.replace(/^data-/, '');
+							const d = $button.data(key);
+							if (Array.isArray(d)) return d;
+							if (d === undefined || d === null) return [];
+							// If it's a single string value, return as single-element array
+							return typeof d === 'string' ? [d] : [];
+						}
+					}
+
+					// Debug: Log some attributes
+					console.log('Button data attributes (sample):', {
+						youthClassificationAttr: $button.attr('data-youth-classification'),
+						youthAgeGroupAttr: $button.attr('data-youth-age-group')
+					});
+
+					// Get data from button attributes, parsing arrays where needed
+					const youthData = {
+						firstName: $button.data('first-name') || '',
+						middleName: $button.data('middle-name') || '',
+						lastName: $button.data('last-name') || '',
+						contact: $button.data('contact') || '',
+						birthday: $button.data('birthday') || '',
+						age: $button.data('age') || '',
+						gender: $button.data('gender') || '',
+						placeOfBirth: $button.data('place-of-birth') || '',
+						educationLevel: $button.data('education-level') || '',
+						registeredSk: $button.data('registered-sk') || '',
+						votedSk: $button.data('voted-sk') || '',
+						registeredNational: $button.data('registered-national') || '',
+						employmentStatus: $button.data('employment-status') || '',
+						employmentCategory: $button.data('employment-category') || '',
+						employmentType: $button.data('employment-type') || '',
+						assembly: $button.data('assembly') || '',
+						skTimes: $button.data('sk-times') || '',
+						reason: $button.data('reason') || '',
+						youthClassification: parseAttrArray('data-youth-classification'),
+						youthClassificationOther: $button.data('youth-classification-other') || '',
+						youthAgeGroup: parseAttrArray('data-youth-age-group'),
+						youthAgeGroupOther: $button.data('youth-age-group-other') || '',
+						editedBy: $button.data('edited-by') || '',
+						editedAt: $button.data('edited-at') || ''
+					};
+
+					// Populate modal fields
+					populateYouthModal(youthData);
+				});
+				
+				// Function to populate the modal with youth data
+				function populateYouthModal(data) {
+					// Personal Information
+					$('#displayFirstName').text(data.firstName);
+					$('#displayMiddleName').text(data.middleName);
+					$('#displayLastName').text(data.lastName);
+					$('#displayContact').text(data.contact);
+					$('#displayBirthday').text(data.birthday);
+					$('#displayAge').text(data.age);
+					$('#displayGender').text(data.gender);
+					$('#displayPlaceOfBirth').text(data.placeOfBirth);
+					
+					// Educational Information
+					$('#displayEducationLevel').text(data.educationLevel);
+					$('#displaySkVoter').text(data.registeredSk);
+					$('#displayNationalVoter').text(data.registeredNational);
+					$('#displayEmploymentStatus').text(data.employmentStatus);
+					
+					// Handle SK Voted conditional display
+					if (data.registeredSk === 'Yes') {
+						$('#displaySkVoted').show();
+						$('#displaySkVotedStatus').text(data.votedSk);
+					} else {
+						$('#displaySkVoted').hide();
+					}
+					
+					// Handle Employment Category conditional display
+					if (data.employmentStatus === 'Employee') {
+						$('#displayEmploymentCategory').show();
+						$('#displayEmploymentCategoryValue').text(data.employmentCategory || 'N/A');
+					} else {
+						$('#displayEmploymentCategory').hide();
+					}
+					
+					// Handle Employment Type conditional display
+					if (data.employmentStatus === 'Employee') {
+						$('#displayEmploymentType').show();
+						$('#displayEmploymentTypeValue').text(data.employmentType || 'N/A');
+					} else {
+						$('#displayEmploymentType').hide();
+					}
+					
+					// Youth Classification
+					let youthClassificationHtml = '';
+					console.log('Youth Classification Data:', data.youthClassification);
+					
+					// Data is already parsed by jQuery, no need for JSON.parse
+					const classifications = data.youthClassification;
+					console.log('Classifications (already parsed):', classifications);
+					
+					if (Array.isArray(classifications) && classifications.length > 0) {
+						classifications.forEach(function(classification) {
+							if (classification && classification.trim() !== '') {
+								youthClassificationHtml += '<p><strong>' + classification + '</strong></p>';
+							}
+						});
+						if (data.youthClassificationOther && data.youthClassificationOther.trim() !== '') {
+							youthClassificationHtml += '<p><strong>Other: </strong>' + data.youthClassificationOther + '</p>';
+						}
+					}
+					
+					if (youthClassificationHtml === '') {
+						youthClassificationHtml = '<p>No classification data available</p>';
+					}
+					
+					$('#displayYouthClassification').html(youthClassificationHtml);
+					
+					// Youth Age Group
+					let youthAgeGroupHtml = '';
+					console.log('Youth Age Group Data:', data.youthAgeGroup);
+					
+					// Data is already parsed by jQuery, no need for JSON.parse
+					const ageGroups = data.youthAgeGroup;
+					console.log('Age Groups (already parsed):', ageGroups);
+					
+					if (Array.isArray(ageGroups) && ageGroups.length > 0) {
+						ageGroups.forEach(function(ageGroup) {
+							if (ageGroup && ageGroup.trim() !== '') {
+								youthAgeGroupHtml += '<p><strong>' + ageGroup + '</strong></p>';
+							}
+						});
+						if (data.youthAgeGroupOther && data.youthAgeGroupOther.trim() !== '') {
+							youthAgeGroupHtml += '<p><strong>Other: </strong>' + data.youthAgeGroupOther + '</p>';
+						}
+					}
+					
+					if (youthAgeGroupHtml === '') {
+						youthAgeGroupHtml = '<p>No age group data available</p>';
+					}
+					
+					$('#displayYouthAgeGroup').html(youthAgeGroupHtml);
+					
+					// KK Assembly Information
+					$('#displayAssemblyAttended').text(data.assembly);
+					
+					// Handle Assembly Times conditional display
+					if (data.assembly === 'Yes') {
+						$('#displayAssemblyTimes').show();
+						$('#displayAssemblyTimesValue').text(data.skTimes || 'N/A');
+						$('#displayAssemblyReason').hide();
+					} else {
+						$('#displayAssemblyTimes').hide();
+						$('#displayAssemblyReason').show();
+						$('#displayAssemblyReasonValue').text(data.reason || 'N/A');
+					}
+					
+					// Edit Log Information
+					if (data.editedBy) {
+						$('#displayEditedBy').text(data.editedBy);
+						if (data.editedAt) {
+							const editDate = new Date(data.editedAt);
+							$('#displayEditedAt').text(editDate.toLocaleString());
+						} else {
+							$('#displayEditedAt').text('N/A');
+						}
+					} else {
+						$('#displayEditedBy').text('N/A');
+						$('#displayEditedAt').text('N/A');
+					}
+				}
+			});
+		</script>
+		
+		<!-- Edit Modal Script -->
+		<script>
+			$(document).ready(function() {
+				// Event listener for edit youth buttons (support both `.edit-btn` and existing `.edit-youth-btn`)
+				$(document).on('click', '.edit-btn, .edit-youth-btn', function() {
+					const $button = $(this);
+
+					// Utility: try parsing a data-* attribute as JSON array, fallback gracefully
+					function parseAttrArray(attrName) {
+						const raw = $button.attr(attrName);
+						if (!raw) return [];
+						try {
+							return JSON.parse(raw);
+						} catch (e) {
+							const key = attrName.replace(/^data-/, '');
+							const d = $button.data(key);
+							if (Array.isArray(d)) return d;
+							if (d === undefined || d === null) return [];
+							return typeof d === 'string' ? [d] : [];
+						}
+					}
+
+					// Debug: Log some attributes
+					console.log('Edit Button clicked - sample attributes:', {
+						idAttr: $button.attr('data-youth-id'),
+						youthClassificationAttr: $button.attr('data-youth-classification')
+					});
+
+					// Get data from button attributes, parsing arrays where needed
+					const youthData = {
+						youthId: $button.data('youth-id') || $button.attr('data-youth-id') || '',
+						firstName: $button.data('first-name') || $button.attr('data-first-name') || '',
+						middleName: $button.data('middle-name') || $button.attr('data-middle-name') || '',
+						lastName: $button.data('last-name') || $button.attr('data-last-name') || '',
+						barangay: $button.data('barangay') || $button.attr('data-barangay') || '',
+						purok: $button.data('purok') || $button.attr('data-purok') || '',
+						contact: $button.data('contact') || $button.attr('data-contact') || '',
+						birthday: $button.data('birthday') || $button.attr('data-birthday') || '',
+						age: $button.data('age') || $button.attr('data-age') || '',
+						gender: $button.data('gender') || $button.attr('data-gender') || '',
+						placeOfBirth: $button.data('place-of-birth') || $button.attr('data-place-of-birth') || '',
+						educationLevel: $button.data('education-level') || $button.attr('data-education-level') || '',
+						registeredSk: $button.data('registered-sk') || $button.attr('data-registered-sk') || '',
+						votedSk: $button.data('voted-sk') || $button.attr('data-voted-sk') || '',
+						registeredNational: $button.data('registered-national') || $button.attr('data-registered-national') || '',
+						employmentStatus: $button.data('employment-status') || $button.attr('data-employment-status') || '',
+						employmentCategory: $button.data('employment-category') || $button.attr('data-employment-category') || '',
+						employmentType: $button.data('employment-type') || $button.attr('data-employment-type') || '',
+						assembly: $button.data('assembly') || $button.attr('data-assembly') || '',
+						skTimes: $button.data('sk-times') || $button.attr('data-sk-times') || '',
+						reason: $button.data('reason') || $button.attr('data-reason') || '',
+						youthClassification: parseAttrArray('data-youth-classification'),
+						youthClassificationOther: $button.data('youth-classification-other') || $button.attr('data-youth-classification-other') || '',
+						youthAgeGroup: parseAttrArray('data-youth-age-group'),
+						youthAgeGroupOther: $button.data('youth-age-group-other') || $button.attr('data-youth-age-group-other') || ''
+					};
+
+					// Populate edit form
+					populateEditForm(youthData);
+				});
+				
+				// Function to populate the edit form with youth data
+				function populateEditForm(data) {
+					// Helper function to format date for input[type="date"]
+					function formatDateForInput(dateValue) {
+						if (!dateValue) return '';
+						let date;
+						if (dateValue instanceof Date) {
+							date = dateValue;
+						} else if (typeof dateValue === 'string') {
+							date = new Date(dateValue);
+						} else {
+							return '';
+						}
+						if (isNaN(date.getTime())) return '';
+						const year = date.getFullYear();
+						const month = String(date.getMonth() + 1).padStart(2, '0');
+						const day = String(date.getDate()).padStart(2, '0');
+						return `${year}-${month}-${day}`;
+					}
+					
+					// Basic fields
+					$('#editYouthId').val(data.youthId || '');
+					$('#editFirstName').val(data.firstName || '');
+					$('#editMiddleName').val(data.middleName || '');
+					$('#editLastName').val(data.lastName || '');
+					$('#editBarangay').val(data.barangay || '');
+					$('#editPurok').val(data.purok || '');
+					$('#editContact').val(data.contact || '');
+					
+					// Handle birthday - try multiple formats
+					const birthdayValue = formatDateForInput(data.birthday) || data.birthday || '';
+					$('#editBirthday').val(birthdayValue);
+					
+					// Calculate age if birthday is set but age is missing
+					if (birthdayValue && !data.age) {
+						const birthday = new Date(data.birthday);
+						const today = new Date();
+						let age = today.getFullYear() - birthday.getFullYear();
+						const monthDiff = today.getMonth() - birthday.getMonth();
+						if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthday.getDate())) {
+							age--;
+						}
+						$('#editAge').val(age);
+					} else {
+						$('#editAge').val(data.age || '');
+					}
+					
+					// Gender - handle all possible values
+					const genderValue = data.gender || '';
+					$('#editGender').val(genderValue);
+					// If value doesn't exist in options, add it
+					const genderSelect = $('#editGender');
+					if (genderValue && genderSelect.find('option[value="' + genderValue + '"]').length === 0) {
+						genderSelect.append($('<option></option>').attr('value', genderValue).text(genderValue));
+						genderSelect.val(genderValue);
+					}
+					
+					$('#editPlaceOfBirth').val(data.placeOfBirth || '');
+					$('#editEducationLevel').val(data.educationLevel || '');
+					$('#editRegisteredSk').val(data.registeredSk || '');
+					$('#editVotedSk').val(data.votedSk || '');
+					$('#editRegisteredNational').val(data.registeredNational || '');
+					$('#editEmploymentStatus').val(data.employmentStatus || '');
+					$('#editEmploymentCategory').val(data.employmentCategory || '');
+					$('#editEmploymentType').val(data.employmentType || '');
+					$('#editAssembly').val(data.assembly || '');
+					$('#editSkTimes').val(data.skTimes || '');
+					$('#editReason').val(data.reason || '');
+					
+					// Handle Youth Classification checkboxes
+					$('input[name="youth_classification"]').prop('checked', false);
+					if (Array.isArray(data.youthClassification)) {
+						data.youthClassification.forEach(function(classification) {
+							$('input[name="youth_classification"][value="' + classification + '"]').prop('checked', true);
+						});
+					}
+					$('#editYouthClassificationOther').val(data.youthClassificationOther);
+					
+					// Handle Youth Age Group checkboxes
+					$('input[name="youth_age_group"]').prop('checked', false);
+					if (Array.isArray(data.youthAgeGroup)) {
+						data.youthAgeGroup.forEach(function(ageGroup) {
+							$('input[name="youth_age_group"][value="' + ageGroup + '"]').prop('checked', true);
+						});
+					}
+					$('#editYouthAgeGroupOther').val(data.youthAgeGroupOther);
+					
+					// Show/hide conditional fields based on current values
+					// Use setTimeout to ensure DOM is updated before checking
+					setTimeout(function() {
+						handleConditionalFields();
+					}, 100);
+				}
+				
+				// Handle conditional field visibility
+				function handleConditionalFields() {
+					// SK Voted field
+					if ($('#editRegisteredSk').val() === 'Yes') {
+						$('#editSkVotedGroup').show();
+					} else {
+						$('#editSkVotedGroup').hide();
+					}
+					
+					// Employment fields
+					if ($('#editEmploymentStatus').val() === 'Employee') {
+						$('#editEmploymentCategoryGroup').show();
+						$('#editEmploymentTypeGroup').show();
+					} else {
+						$('#editEmploymentCategoryGroup').hide();
+						$('#editEmploymentTypeGroup').hide();
+					}
+					
+					// Assembly fields
+					if ($('#editAssembly').val() === 'Yes') {
+						$('#editAssemblyTimesGroup').show();
+						$('#editAssemblyReasonGroup').hide();
+					} else if ($('#editAssembly').val() === 'No') {
+						$('#editAssemblyTimesGroup').hide();
+						$('#editAssemblyReasonGroup').show();
+					} else {
+						$('#editAssemblyTimesGroup').hide();
+						$('#editAssemblyReasonGroup').hide();
+					}
+					
+					// Youth Classification Other field
+					if ($('input[name="youth_classification"][value="Other"]').is(':checked')) {
+						$('#editYouthClassificationOtherGroup').show();
+					} else {
+						$('#editYouthClassificationOtherGroup').hide();
+					}
+					
+					// Youth Age Group Other field
+					if ($('input[name="youth_age_group"][value="Other"]').is(':checked')) {
+						$('#editYouthAgeGroupOtherGroup').show();
+					} else {
+						$('#editYouthAgeGroupOtherGroup').hide();
+					}
+				}
+				
+				// Auto-calculate age when birthday changes
+				$('#editBirthday').on('change', function() {
+					const birthday = new Date($(this).val());
+					if (!isNaN(birthday.getTime())) {
+						const today = new Date();
+						let age = today.getFullYear() - birthday.getFullYear();
+						const monthDiff = today.getMonth() - birthday.getMonth();
+						if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthday.getDate())) {
+							age--;
+						}
+						$('#editAge').val(age);
+					}
+				});
+				
+				// Event listeners for conditional field changes
+				$('#editRegisteredSk').on('change', handleConditionalFields);
+				$('#editEmploymentStatus').on('change', handleConditionalFields);
+				$('#editAssembly').on('change', handleConditionalFields);
+				$('input[name="youth_classification"]').on('change', handleConditionalFields);
+				$('input[name="youth_age_group"]').on('change', handleConditionalFields);
+				
+				// Handle form submission
+				$('#saveChangesBtn').on('click', function() {
+					const btn = $(this);
+					
+					// Prevent multiple clicks
+					if (btn.data('updating') === '1') return;
+					btn.data('updating', '1');
+					
+					const originalText = btn.html();
+					btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...');
+					
+					// Calculate age from birthday if needed
+					let age = parseInt($('#editAge').val());
+					const birthday = $('#editBirthday').val();
+					if (birthday && (!age || isNaN(age))) {
+						const birthdayDate = new Date(birthday);
+						const today = new Date();
+						age = today.getFullYear() - birthdayDate.getFullYear();
+						const monthDiff = today.getMonth() - birthdayDate.getMonth();
+						if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthdayDate.getDate())) {
+							age--;
+						}
+					}
+					
+					// Collect form data
+					const formData = {
+						youthId: $('#editYouthId').val(),
+						first_name: $('#editFirstName').val(),
+						middle_name: $('#editMiddleName').val(),
+						last_name: $('#editLastName').val(),
+						barangay: $('#editBarangay').val(),
+						purok: $('#editPurok').val(),
+						contact: $('#editContact').val(),
+						birthday: $('#editBirthday').val(),
+						age: age,
+						gender: $('#editGender').val(),
+						place_of_birth: $('#editPlaceOfBirth').val(),
+						education_level: $('#editEducationLevel').val(),
+						registered_sk: $('#editRegisteredSk').val(),
+						voted_sk: $('#editVotedSk').val() || null,
+						registered_national: $('#editRegisteredNational').val(),
+						employment_status: $('#editEmploymentStatus').val(),
+						employment_category: $('#editEmploymentCategory').val() || null,
+						employment_type: $('#editEmploymentType').val() || null,
+						Assembly: $('#editAssembly').val(),
+						sk_times: $('#editSkTimes').val() || null,
+						reason: $('#editReason').val() || null,
+						youth_classification: $('input[name="youth_classification"]:checked').map(function() {
+							return this.value;
+						}).get(),
+						youth_classification_other: $('#editYouthClassificationOther').val() || null,
+						youth_age_group: $('input[name="youth_age_group"]:checked').map(function() {
+							return this.value;
+						}).get(),
+						youth_age_group_other: $('#editYouthAgeGroupOther').val() || null,
+						// Add edit tracking information (will be overridden by backend session for security)
+						edited_by: '<%= (user && user.email) ? user.email : "Unknown" %>',
+						edited_at: new Date().toISOString()
+					};
+					
+					// Validate required fields
+					if (!formData.first_name || !formData.last_name || !formData.barangay || !formData.purok || 
+						!formData.contact || !formData.birthday || !formData.age || !formData.gender || 
+						!formData.place_of_birth || !formData.education_level || 
+						!formData.registered_sk || !formData.registered_national || 
+						!formData.employment_status || !formData.Assembly) {
+						alert('Please fill in all required fields.');
+						btn.data('updating', '0').prop('disabled', false).html(originalText);
+						return;
+					}
+					
+					// Debug: Log form data being sent
+					console.log('Form data being sent:', formData);
+					
+					// Send update request
+					$.ajax({
+						url: '/update-youth',
+						method: 'PUT',
+						contentType: 'application/json',
+						data: JSON.stringify(formData),
+						success: function(response) {
+							console.log('Update successful:', response);
+							if (response.success) {
+								alert('Youth record updated successfully!');
+								$('#editModal').modal('hide');
+								// Reload the page to show updated data
+								location.reload();
+							} else {
+								alert('Error: ' + (response.message || 'Failed to update record'));
+								btn.data('updating', '0').prop('disabled', false).html(originalText);
+							}
+						},
+						error: function(xhr, status, error) {
+							console.error('Error updating youth:', error);
+							console.error('Response text:', xhr.responseText);
+							console.error('Status:', xhr.status);
+							let errorMessage = 'Error updating youth record. Please try again.';
+							try {
+								const errorData = JSON.parse(xhr.responseText);
+								if (errorData.message) {
+									errorMessage = errorData.message;
+								}
+							} catch (e) {
+								// Use default error message
+							}
+							alert(errorMessage);
+							btn.data('updating', '0').prop('disabled', false).html(originalText);
+						}
+					});
+				});
+			});
+		</script>
+
+					<!-- SMS selection & send script (matches senior behaviors) -->
+					<script>
+						$(function() {
+							const sendBtn = $('#sendSmsBtn');
+							const recipientsListEl = $('#recipientsList');
+							const openSmsBtn = $('#openSmsForSelected');
+							const smsMessage = $('#smsMessage');
+							const charCount = $('#charCount');
+
+							function updateCharCount() {
+								if (!charCount.length || !smsMessage.length) return;
+								charCount.text(smsMessage.val().length);
+							}
+
+							// initial charcount
+							smsMessage.on('input', updateCharCount);
+							updateCharCount();
+
+							function refreshOpenSmsState() {
+								const any = $('.row-checkbox:checked').length > 0;
+								openSmsBtn.prop('disabled', !any);
+							}
+
+							// watch row checkboxes
+							$(document).on('change', '.row-checkbox', refreshOpenSmsState);
+							refreshOpenSmsState();
+
+							// When clicking the Open SMS button, populate recipients and show modal
+							openSmsBtn.on('click', function() {
+								const checked = $('.row-checkbox:checked');
+								recipientsListEl.empty();
+								if (checked.length === 0) {
+									recipientsListEl.html('<em>No recipients selected</em>');
+									return;
+								}
+
+								checked.each(function() {
+									const phone = $(this).data('phone') || '';
+									const name = $(this).data('name') || '';
+
+									// Only add if phone exists (similar to senior behavior)
+									if (phone) {
+										const item = $('<div/>', {
+											class: 'recipient-item mb-1',
+											'data-phone': phone,
+											'data-name': name,
+											'data-first-name': $(this).data('first-name') || $(this).attr('data-first-name') || '',
+											'data-middle-name': $(this).data('middle-name') || $(this).attr('data-middle-name') || '',
+											'data-last-name': $(this).data('last-name') || $(this).attr('data-last-name') || '',
+											'data-barangay': $(this).data('barangay') || $(this).attr('data-barangay') || '',
+											'data-purok': $(this).data('purok') || $(this).attr('data-purok') || '',
+											'data-record-id': $(this).data('record-id') || $(this).attr('data-record-id') || $(this).val()
+										});
+										item.text(name + (phone ? ' (' + phone + ')' : ''));
+										recipientsListEl.append(item);
+									}
+								});
+
+								// show modal (bootstrap v4/v5 compatible handling)
+								if ($('#assistanceModal').length && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+									const modalEl = document.getElementById('assistanceModal');
+									const modal = new bootstrap.Modal(modalEl);
+									modal.show();
+								} else {
+									$('#assistanceModal').modal('show');
+								}
+							});
+
+							// Send SMS handler
+							sendBtn.on('click', function() {
+								const btn = $(this);
+								if (btn.data('sending') === 1) return;
+
+								const message = smsMessage.val() ? smsMessage.val().trim() : '';
+								if (!message) {
+									alert('Please enter a message to send.');
+									return;
+								}
+
+								const recipients = recipientsListEl.find('.recipient-item').map(function() {
+									return {
+										phone: $(this).data('phone'),
+										name: $(this).data('name'),
+										first_name: $(this).data('first-name') || '',
+										middle_name: $(this).data('middle-name') || '',
+										last_name: $(this).data('last-name') || '',
+										barangay: $(this).data('barangay') || '',
+										purok: $(this).data('purok') || '',
+										record_id: $(this).data('record-id') || '',
+										recipient_type: 'Youth'
+									};
+								}).get();
+
+								if (!recipients.length) {
+									alert('No recipients available to send to.');
+									return;
+								}
+
+								const originalHtml = btn.html();
+								btn.data('sending', 1).prop('disabled', true).text('Sending...');
+
+								// Send via AJAX POST to server endpoint
+								$.ajax({
+									url: '/send-sms',
+									method: 'POST',
+									contentType: 'application/json',
+									data: JSON.stringify({ message: message, recipients: recipients }),
+									success: function(res) {
+										btn.data('sending', 0).prop('disabled', false).html(originalHtml);
+										alert((res && res.success) ? 'SMS sent successfully.' : 'SMS request completed.');
+										// hide modal and reset
+										$('#assistanceModal').modal('hide');
+										$('.row-checkbox').prop('checked', false);
+										refreshOpenSmsState();
+										recipientsListEl.html('<em>No recipients selected</em>');
+										updateCharCount();
+									},
+									error: function(xhr) {
+										console.error('Error sending SMS:', xhr);
+										btn.data('sending', 0).prop('disabled', false).html(originalHtml);
+										alert('Error sending SMS. Check console for details.');
+									}
+								});
+							});
+
+							// Reset when modal closed
+							$('#assistanceModal').on('hidden.bs.modal', function() {
+								$('#smsForm')[0] && $('#smsForm')[0].reset();
+								recipientsListEl.html('<em>No recipients selected</em>');
+								updateCharCount();
+							});
+						});
+
+						// SMS HISTORY FUNCTIONALITY FOR YOUTH
+						$(function() {
+							$('#viewSmsHistoryBtn').on('click', async function() {
+								const modalEl = document.getElementById('smsHistoryModal');
+								const tableBody = document.getElementById('smsHistoryTableBody');
+								
+								// Show modal
+								$('#smsHistoryModal').modal('show');
+								
+								// Show loading
+								tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Loading...</td></tr>';
+								
+								try {
+									const response = await fetch('/sms-history?recipient_type=Youth&limit=200');
+									const data = await response.json();
+									
+									if (data.success && data.data) {
+										if (data.data.length === 0) {
+											tableBody.innerHTML = '<tr><td colspan="7" class="text-center">No SMS history found</td></tr>';
+										} else {
+											tableBody.innerHTML = '';
+											data.data.forEach(record => {
+												const row = document.createElement('tr');
+												const sentDate = new Date(record.sent_at);
+												const fullName = `${record.first_name || ''} ${record.middle_name || ''} ${record.last_name || ''}`.trim();
+												const statusBadge = record.status === 'sent' 
+													? '<span class="badge badge-success">Sent</span>'
+													: record.status === 'error'
+													? '<span class="badge badge-danger">Error</span>'
+													: '<span class="badge badge-warning">Skipped</span>';
+												
+												row.innerHTML = `
+													<td>${sentDate.toLocaleString()}</td>
+													<td>${record.phone_number || 'N/A'}</td>
+													<td>${fullName || 'N/A'}</td>
+													<td>${record.barangay || 'N/A'}</td>
+													<td>${record.purok || 'N/A'}</td>
+													<td style="max-width: 200px; word-wrap: break-word;">${record.message || 'N/A'}</td>
+													<td>${statusBadge}</td>
+												`;
+												tableBody.appendChild(row);
+											});
+										}
+									} else {
+										tableBody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Error loading SMS history</td></tr>';
+									}
+								} catch (error) {
+									console.error('Error loading SMS history:', error);
+									tableBody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Error loading SMS history</td></tr>';
+								}
+							});
+						});
+
+						// ARCHIVE FUNCTIONALITY FOR YOUTH
+						document.addEventListener('DOMContentLoaded', function() {
+							const archiveButtons = document.querySelectorAll('.archive-btn');
+							archiveButtons.forEach(button => {
+								button.addEventListener('click', async function() {
+									const youthId = this.getAttribute('data-youth-id');
+									const currentStatus = this.getAttribute('data-status');
+									const isArchived = currentStatus === 'Archived';
+									
+									if (!youthId) {
+										alert('Error: Youth ID not found');
+										return;
+									}
+
+									// Confirm action
+									const action = isArchived ? 'unarchive' : 'archive';
+									const confirmMessage = isArchived 
+										? 'Are you sure you want to unarchive this Youth record?'
+										: 'Are you sure you want to archive this Youth record?';
+									
+									if (!confirm(confirmMessage)) {
+										return;
+									}
+
+									// Disable button during request
+									const originalHTML = this.innerHTML;
+									this.disabled = true;
+									this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+
+									try {
+										const endpoint = isArchived ? '/unarchive-youth' : '/archive-youth';
+										const response = await fetch(endpoint, {
+											method: 'POST',
+											headers: {
+												'Content-Type': 'application/json'
+											},
+											body: JSON.stringify({ youth_id: youthId })
+										});
+
+										const data = await response.json();
+
+										if (data.success) {
+											alert(data.message || `Youth record ${action}d successfully`);
+											// Reload the page to reflect the changes
+											window.location.reload();
+										} else {
+											alert('Error: ' + (data.message || 'Failed to ' + action + ' record'));
+											this.disabled = false;
+											this.innerHTML = originalHTML;
+										}
+									} catch (error) {
+										console.error('Archive error:', error);
+										alert('An error occurred while ' + action + 'ing the record. Please try again.');
+										this.disabled = false;
+										this.innerHTML = originalHTML;
+									}
+								});
+							});
+						});
+					</script>
+
+		<!-- Generate Report Script -->
+		<script>
+			// Convert EJS data to JavaScript objects
+			const youthsData = <%- JSON.stringify(youths || []) %>;
+			
+			// Wait for DOM to be fully loaded
+			document.addEventListener('DOMContentLoaded', function() {
+				console.log('DOM loaded - initializing Generate Report button');
+				
+				// Initialize Generate Report Button
+				const generateReportBtn = document.getElementById('generateReportBtn');
+				
+				if (generateReportBtn) {
+					console.log('Generate Report button found, adding event listener');
+					
+					generateReportBtn.addEventListener('click', function() {
+						console.log('Generate Report button clicked');
+						
+						try {
+							// Build the report table HTML
+							const tableHtml = buildYouthsReportTableHtml(youthsData);
+							
+							// Open new window for report
+							const newWin = window.open('', '_blank', 'width=1200,height=800,scrollbars=yes');
+							
+							if (!newWin) {
+								alert('Popup blocked! Please allow popups for this site to view the report.');
+								return;
+							}
+							
+							const docHtml = `<!doctype html>
+								<html>
+								<head>
+									<meta charset="utf-8">
+									<title>Youth Report by Barangay</title>
+									<meta name="viewport" content="width=device-width,initial-scale=1">
+									<link rel="stylesheet" href="/bower_components/bootstrap/css/bootstrap.min.css">
+									<style>
+										body { padding: 20px; font-family: Arial, sans-serif; }
+										.table { margin-top: 20px; }
+										.summary { background: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 20px; }
+										.barangay-section { margin-bottom: 30px; }
+										.barangay-header { background: #007bff; color: white; padding: 10px; border-radius: 5px 5px 0 0; font-weight: bold; }
+									</style>
+								</head>
+								<body>
+									<div class="container">
+										<h2 class="my-3 text-center">Youth Report by Barangay</h2>
+										<p class="text-center"><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
+										${tableHtml}
+									</div>
+								</body>
+								</html>`;
+							
+							newWin.document.open();
+							newWin.document.write(docHtml);
+							newWin.document.close();
+							
+							console.log('Report generated successfully');
+							
+						} catch (e) {
+							console.error('Error generating report:', e);
+							alert('Error generating report: ' + e.message);
+						}
+					});
+				} else {
+					console.error('Generate Report button not found in DOM!');
+				}
+
+				// Build table HTML for report - grouped by barangay
+				function buildYouthsReportTableHtml(youths) {
+					function esc(s){ 
+						return String(s === null || s === undefined ? '' : s)
+							.replace(/&/g,'&amp;')
+							.replace(/</g,'&lt;')
+							.replace(/>/g,'&gt;'); 
+					}
+					
+					// Group youths by barangay
+					const barangayGroups = {};
+					const uniqueIds = new Set();
+					
+					youths.forEach(y => {
+						if (!y || !(y._id || y.id)) return;
+						uniqueIds.add(y._id || y.id);
+						
+						const barangay = y.barangay || 'Unknown';
+						if (!barangayGroups[barangay]) {
+							barangayGroups[barangay] = {
+								youths: [],
+								ages: [],
+								male: 0,
+								female: 0,
+								otherGender: 0,
+								employee: 0,
+								unemployed: 0,
+								selfEmployed: 0,
+								otherEmployment: 0
+							};
+						}
+						
+						barangayGroups[barangay].youths.push(y);
+						
+						// Collect age
+						const age = (typeof y.age === 'number') ? y.age : (y.age ? parseInt(y.age, 10) : null);
+						if (age !== null && !isNaN(age)) {
+							barangayGroups[barangay].ages.push(age);
+						}
+						
+						// Count gender
+						const gender = (y.gender || '').toString().toLowerCase();
+						if (/^male$/i.test(gender)) {
+							barangayGroups[barangay].male += 1;
+						} else if (/^female$/i.test(gender)) {
+							barangayGroups[barangay].female += 1;
+						} else {
+							barangayGroups[barangay].otherGender += 1;
+						}
+						
+						// Count employment status
+						const empStatus = (y.employment_status || '').toString();
+						if (/^employee$/i.test(empStatus)) {
+							barangayGroups[barangay].employee += 1;
+						} else if (/^unemployed$/i.test(empStatus)) {
+							barangayGroups[barangay].unemployed += 1;
+						} else if (/^self-employed$/i.test(empStatus) || /^self employed$/i.test(empStatus)) {
+							barangayGroups[barangay].selfEmployed += 1;
+						} else {
+							barangayGroups[barangay].otherEmployment += 1;
+						}
+					});
+					
+					// Sort barangays alphabetically
+					const sortedBarangays = Object.keys(barangayGroups).sort();
+					
+					let html = '';
+					
+					// Generate table for each barangay
+					sortedBarangays.forEach(barangay => {
+						const group = barangayGroups[barangay];
+						const total = group.youths.length;
+						const minAge = group.ages.length ? Math.min(...group.ages) : 'N/A';
+						const maxAge = group.ages.length ? Math.max(...group.ages) : 'N/A';
+						const ageRange = group.ages.length ? `${minAge} - ${maxAge}` : 'N/A';
+						
+						html += `
+							<div class="barangay-section">
+								<div class="barangay-header">${esc(barangay)}</div>
+								<div class="table-responsive">
+									<table class="table table-striped table-bordered">
+										<thead class="table-dark">
+											<tr>
+												<th>Age Range</th>
+												<th>Total</th>
+												<th>Male</th>
+												<th>Female</th>
+												<th>Other/Unknown</th>
+												<th>Employee</th>
+												<th>Unemployed</th>
+												<th>Self-employed</th>
+												<th>Other</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td><strong>${esc(ageRange)}</strong></td>
+												<td><span class="badge bg-primary">${total}</span></td>
+												<td>${group.male}</td>
+												<td>${group.female}</td>
+												<td>${group.otherGender}</td>
+												<td>${group.employee}</td>
+												<td>${group.unemployed}</td>
+												<td>${group.selfEmployed}</td>
+												<td>${group.otherEmployment}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						`;
+					});
+					
+					// Calculate overall totals
+					let overallTotal = 0;
+					let overallMale = 0, overallFemale = 0, overallOtherGender = 0;
+					let overallEmployee = 0, overallUnemployed = 0, overallSelfEmployed = 0, overallOtherEmployment = 0;
+					const allAges = [];
+					
+					Object.values(barangayGroups).forEach(group => {
+						overallTotal += group.youths.length;
+						overallMale += group.male;
+						overallFemale += group.female;
+						overallOtherGender += group.otherGender;
+						overallEmployee += group.employee;
+						overallUnemployed += group.unemployed;
+						overallSelfEmployed += group.selfEmployed;
+						overallOtherEmployment += group.otherEmployment;
+						allAges.push(...group.ages);
+					});
+					
+					const overallAgeRange = allAges.length ? 
+						`${Math.min(...allAges)} - ${Math.max(...allAges)}` : 'N/A';
+					
+					// Add summary section
+					html += `
+						<div class="summary">
+							<h5>Overall Summary</h5>
+							<div class="row">
+								<div class="col-md-6">
+									<ul class="list-unstyled">
+										<li><strong>Total Barangays:</strong> ${sortedBarangays.length}</li>
+										<li><strong>Unique Youths:</strong> ${uniqueIds.size}</li>
+										<li><strong>Total Records:</strong> ${overallTotal}</li>
+										<li><strong>Overall Age Range:</strong> ${overallAgeRange}</li>
+									</ul>
+								</div>
+								<div class="col-md-6">
+									<ul class="list-unstyled">
+										<li><strong>Gender Distribution:</strong></li>
+										<li>&nbsp;&nbsp;Male: ${overallMale}</li>
+										<li>&nbsp;&nbsp;Female: ${overallFemale}</li>
+										<li>&nbsp;&nbsp;Other/Unknown: ${overallOtherGender}</li>
+										<li><strong>Employment Distribution:</strong></li>
+										<li>&nbsp;&nbsp;Employee: ${overallEmployee}</li>
+										<li>&nbsp;&nbsp;Unemployed: ${overallUnemployed}</li>
+										<li>&nbsp;&nbsp;Self-employed: ${overallSelfEmployed}</li>
+										<li>&nbsp;&nbsp;Other: ${overallOtherEmployment}</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					`;
+					
+					return html;
+				}
+			});
+
+			// Initialize Feather Icons
+			if (typeof feather !== 'undefined' && feather.replace) {
+				try {
+					feather.replace();
+				} catch (e) {
+					console.warn('feather.replace() failed:', e);
+				}
+			} else {
+				console.warn('feather not available');
+			}
+		</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+		<script>
+			// Initialize Feather Icons after script loads
+			document.addEventListener('DOMContentLoaded', function() {
+				if (typeof feather !== 'undefined' && feather.replace) {
+					feather.replace();
+				}
+			});
+		</script>
+	</body>
+	</html>
