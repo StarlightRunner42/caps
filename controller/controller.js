@@ -158,37 +158,45 @@ exports.logout = (req, res) => {
         ? body.education_hr_profile.skill_other_text.find(text => text && text.trim() !== '')
         : body.education_hr_profile?.skill_other_text;
   
+      // Support both nested `identifying_information` payloads and flat form fields
+      const rawPlace = body.identifying_information?.place_of_birth || body.place_of_birth;
+      const rawReligion = body.identifying_information?.religion || body.religion;
+
       const residentData = {
         identifying_information: {
           name: {
-            first_name: body.identifying_information?.name?.first_name,
-            middle_name: body.identifying_information?.name?.middle_name,
-            last_name: body.identifying_information?.name?.last_name
+            first_name: body.identifying_information?.name?.first_name || body.first_name,
+            middle_name: body.identifying_information?.name?.middle_name || body.middle_name,
+            last_name: body.identifying_information?.name?.last_name || body.last_name
           },
           address: {
-            barangay: body.identifying_information?.address?.barangay,
-            purok: body.identifying_information?.address?.purok
+            barangay: body.identifying_information?.address?.barangay || body.barangay,
+            purok: body.identifying_information?.address?.purok || body.purok
           },
-          date_of_birth: body.identifying_information?.date_of_birth,
-          age: parseInt(body.identifying_information?.age) || 0,
-          place_of_birth: Array.isArray(body.identifying_information?.place_of_birth)
-            ? body.identifying_information.place_of_birth.filter(Boolean)
-            : [body.identifying_information?.place_of_birth].filter(Boolean),
-          religion: body.identifying_information?.religion,
-          marital_status: body.identifying_information?.marital_status,
-          gender: body.identifying_information?.gender,
+          date_of_birth: body.identifying_information?.date_of_birth || body.birthday || body.date_of_birth,
+          age: parseInt(body.identifying_information?.age || body.age) || 0,
+          place_of_birth: Array.isArray(rawPlace)
+            ? rawPlace.filter(Boolean)
+            : [rawPlace].filter(Boolean),
+          religion: Array.isArray(rawReligion)
+            ? rawReligion.filter(Boolean)
+            : (rawReligion ? [rawReligion] : []),
+          marital_status: body.identifying_information?.marital_status || body.marital_status || body.civil_status,
+          gender: body.identifying_information?.gender || body.gender,
           contacts: Array.isArray(body.identifying_information?.contacts)
             ? body.identifying_information.contacts.filter(c => c?.name)
-            : [],
-          osca_id_number: body.identifying_information?.osca_id_number,
-          gsis_sss: body.identifying_information?.gsis_sss,
-          philhealth: body.identifying_information?.philhealth,
-          sc_association_org_id_no: body.identifying_information?.sc_association_org_id_no,
-          tin: body.identifying_information?.tin,
-          other_govt_id: body.identifying_information?.other_govt_id,
-          service_business_employment: body.identifying_information?.service_business_employment,
-          current_pension: body.identifying_information?.current_pension,
-          capability_to_travel: body.identifying_information?.capability_to_travel === 'Yes' ? 'Yes' : 'No'
+            : Array.isArray(body.contacts)
+              ? body.contacts.filter(c => c?.name)
+              : (body.contacts ? [body.contacts].filter(c => c?.name) : []),
+          osca_id_number: body.identifying_information?.osca_id_number || body.osca_id,
+          gsis_sss: body.identifying_information?.gsis_sss || body.gsis_sss_no || body.gsis_sss,
+          philhealth: body.identifying_information?.philhealth || body.philhealth_no || body.philhealth,
+          sc_association_org_id_no: body.identifying_information?.sc_association_org_id_no || body.sc_association_id,
+          tin: body.identifying_information?.tin || body.tin_no || body.tin,
+          other_govt_id: body.identifying_information?.other_govt_id || body.other_govt_id,
+          service_business_employment: body.identifying_information?.service_business_employment || body.service || body.service_business_employment,
+          current_pension: body.identifying_information?.current_pension || body.pension || body.current_pension,
+          capability_to_travel: (body.identifying_information?.capability_to_travel || body.capability_to_travel) === 'Yes' ? 'Yes' : 'No'
         },
         family_composition: {
           spouse: {
