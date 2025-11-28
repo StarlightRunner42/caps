@@ -779,15 +779,23 @@ exports.generatePwdApplicationPdf = async (req, res) => {
       setText('15 ORGANIZATION INFORMATION', otherDetails);
     }
 
-    form.flatten();
+    // Try to flatten the form, but continue if it fails (some PDFs have broken references)
+    try {
+      form.flatten();
+    } catch (flattenError) {
+      console.warn('[PWD PDF] Could not flatten form, saving without flattening:', flattenError.message);
+      // Continue without flattening - the form will still be filled
+    }
+    
     const pdfBytes = await pdfDoc.save();
     const safeLast = (pwdRecord.last_name || 'PWD').replace(/\s+/g, '-');
     const safeFirst = (pwdRecord.first_name || 'Record').replace(/\s+/g, '-');
     const filename = `PWD-${safeLast}-${safeFirst}.pdf`;
 
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `inline; filename="${filename}"`);
-    return res.send(Buffer.from(pdfBytes));
+    res.setHeader('Content-Disposition', `inline; filename="${encodeURIComponent(filename)}"`);
+    res.setHeader('Content-Length', pdfBytes.length);
+    return res.send(pdfBytes);
   } catch (error) {
     console.error('Error generating PWD PDF:', error);
     return res.status(500).json({
@@ -961,6 +969,410 @@ exports.unarchiveYouth = async (req, res) => {
       message: 'Internal Server Error',
       success: false,
       error: err.message
+    });
+  }
+};
+
+// Generate Senior Citizen Application PDF
+exports.generateSeniorApplicationPdf = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid Senior Citizen ID'
+      });
+    }
+
+    const seniorRecord = await SeniorCitizen.findById(id).lean();
+
+    if (!seniorRecord) {
+      return res.status(404).json({
+        success: false,
+        message: 'Senior Citizen record not found'
+      });
+    }
+
+    const templatePath = path.join(__dirname, '../default/pdf/SENIOR-FORMFIELD.pdf');
+    const templateBytes = await fs.promises.readFile(templatePath);
+    const pdfDoc = await PDFDocument.load(templateBytes);
+    const form = pdfDoc.getForm();
+
+    const shouldLogDebug = process.env.NODE_ENV !== 'production';
+    const warnMissingField = (msg) => {
+      if (shouldLogDebug) {
+        console.warn(`[Senior PDF] ${msg}`);
+      }
+    };
+
+    const setText = (fieldName, value = '') => {
+      if (!fieldName) return;
+      try {
+        const field = form.getTextField(fieldName);
+        field.setText(String(value || ''));
+      } catch (err) {
+        warnMissingField(`Text field "${fieldName}" not found`);
+      }
+    };
+
+    const setCheckbox = (fieldName, checked) => {
+      if (!fieldName) return;
+      try {
+        const field = form.getCheckBox(fieldName);
+        if (checked) {
+          field.check();
+        } else {
+          field.uncheck();
+        }
+      } catch (err) {
+        warnMissingField(`Checkbox "${fieldName}" not found`);
+      }
+    };
+
+    const formatDate = (value) => {
+      if (!value) return '';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return '';
+      const month = `${date.getMonth() + 1}`.padStart(2, '0');
+      const day = `${date.getDate()}`.padStart(2, '0');
+      const year = date.getFullYear();
+      return `${month}/${day}/${year}`;
+    };
+
+    const info = seniorRecord.identifying_information || {};
+    const name = info.name || {};
+    const address = info.address || {};
+    const family = seniorRecord.family_composition || {};
+    const education = seniorRecord.education_hr_profile || {};
+
+    // Basic Information - Using actual PDF field names
+    setText('LAST NAME', name.last_name || '');
+    setText('FIRST NAME', name.first_name || '');
+    setText('MIDDLE NAME', name.middle_name || '');
+    setText('BARANGAY', address.barangay || '');
+    setText('PUROK', address.purok || '');
+    setText('PLACE OF BIRTH', Array.isArray(info.place_of_birth) ? info.place_of_birth.join(', ') : (info.place_of_birth || ''));
+    setText('MARITAL STATUS', info.marital_status || '');
+    setText('GENDER', info.gender || '');
+    
+    // Date of Birth - using numbered field (likely Text Field129 or similar)
+    // Try multiple possible date fields
+    const dobFormatted = formatDate(info.date_of_birth);
+    if (dobFormatted) {
+      setText('Text Field129', dobFormatted);
+      setText('Text Field128', dobFormatted);
+      setText('Text Field127', dobFormatted);
+    }
+    
+    // Contact Information
+    const primaryContact = Array.isArray(info.contacts) && info.contacts.length > 0 ? info.contacts[0] : null;
+    setText('CONTACT', primaryContact?.phone || '');
+    setText('EMAIL', primaryContact?.email || '');
+    setText('RELIGION', ''); // Not in schema
+    
+    // ID Information
+    setText('OSCA ID', info.osca_id_number || '');
+    setText('GSIS/SSS', info.gsis_sss || '');
+    setText('TIN', info.tin || '');
+    setText('PHILHEALTH', info.philhealth || '');
+    setText('OTHER ID', info.other_govt_id || '');
+    
+    // Employment and Pension
+    setText('SERVICE BUSINESS EMPLOYMENT', info.service_business_employment || '');
+    setText('CURRENT PENSION', info.current_pension || '');
+    
+    // Family Composition
+    setText('NAME OF SPOUSE', family.spouse?.name || '');
+    
+    const father = family.father || {};
+    setText('FATHER FIRST NAME', father.first_name || '');
+    setText('FATHER LAST NAME', father.last_name || '');
+    setText('FATHER MIDDLE NAME', father.middle_name || '');
+    setText('FATHER EXTENSION', father.extension || '');
+    
+    const mother = family.mother || {};
+    setText('MOTHER FIRST NAME', mother.first_name || '');
+    setText('MOTHER LAST NAME', mother.last_name || '');
+    setText('MOTHER MIDDLE NAME', mother.middle_name || '');
+    
+    // Children - handle first child if available
+    if (Array.isArray(family.children) && family.children.length > 0) {
+      const firstChild = family.children[0];
+      setText('CHILDREN', firstChild.full_name || '');
+      setText('CHILDREN OCCUPATION', firstChild.occupation || '');
+      setText('INCOME', firstChild.income || '');
+      setText('CHILD AGE', firstChild.age ? String(firstChild.age) : '');
+      setText('WORKING/ NOT WORKING', firstChild.working_status || '');
+    }
+    
+    // Travel capability
+    setCheckbox('TRAVEL YES', info.capability_to_travel === 'Yes' || info.capability_to_travel === 'Capable');
+    setCheckbox('TRAVEL NO', info.capability_to_travel === 'No' || info.capability_to_travel === 'Not Capable');
+    
+    // Education Attainment
+    const educationLevels = Array.isArray(education.educational_attainment) ? education.educational_attainment : [];
+    setCheckbox('ELEMENTARY LEVEL', educationLevels.some(e => e.includes('Elementary Level')));
+    setCheckbox('ELEMENTARY GRADUATE', educationLevels.some(e => e.includes('Elementary Graduate')));
+    setCheckbox('HIGHSCHOOL LEVEL', educationLevels.some(e => e.includes('High School Level')));
+    setCheckbox('HIGHSCHOOL GRADUATE', educationLevels.some(e => e.includes('High School Graduate')));
+    setCheckbox('COLLEGE LEVEL', educationLevels.some(e => e.includes('College Level')));
+    setCheckbox('COLLEGE GRADUATE', educationLevels.some(e => e.includes('College Graduate')));
+    setCheckbox('POST GRADUATE', educationLevels.some(e => e.includes('Post Graduate')));
+    setCheckbox('VOCATIONAL', educationLevels.some(e => e.includes('Vocational')));
+    setCheckbox('NOT ATTENDED SCHOOL', educationLevels.some(e => e.includes('Not Attended')));
+    
+    // Skills
+    const skills = Array.isArray(education.skills) ? education.skills : [];
+    const skillMap = {
+      'FISHING': 'Fishing',
+      'ENGINEERING': 'Engineering',
+      'BARBER': 'Barber',
+      'EVANGELIZATION': 'Evangelization',
+      'MILWRIGHT': 'Milwright',
+      'TEACHING': 'Teaching',
+      'COUNSELING': 'Counseling',
+      'COOKING': 'Cooking',
+      'CARPENTER': 'Carpenter',
+      'MASON': 'Mason',
+      'TAILOR': 'Tailor',
+      'FARMING': 'Farming',
+      'ARTS': 'Arts',
+      'PLUMBER': 'Plumber',
+      'SAPATERO': 'Sapatero',
+      'CHEF/COOK': 'Chef/Cook',
+      'DENTAL SKILLS': 'Dental',
+      'MEDICAL SKILLS': 'Medical',
+      'LEGAL SERVICES SKILLS': 'Legal Services'
+    };
+    
+    Object.keys(skillMap).forEach(pdfField => {
+      const skillName = skillMap[pdfField];
+      setCheckbox(pdfField, skills.some(s => s && s.toLowerCase().includes(skillName.toLowerCase())));
+    });
+    
+    if (education.skill_other_text) {
+      setText('SKILL OTHER TEXT', education.skill_other_text);
+      setCheckbox('OTHERS TECHNICAL SKILLS', true);
+    }
+    
+    // Community Service
+    const communityServices = Array.isArray(seniorRecord.community_service) ? seniorRecord.community_service : [];
+    setCheckbox('MEDICAL COMMUNITY SERVICE', communityServices.some(s => s && s.toLowerCase().includes('medical')));
+    setCheckbox('COMMUNITY/ ORGANIZATION LEADER', communityServices.some(s => s && s.toLowerCase().includes('leader')));
+    setCheckbox('NEIGHBORHOOD SUPPORT SERVICES', communityServices.some(s => s && s.toLowerCase().includes('neighborhood')));
+    setCheckbox('COUNSELING / REFERRAL', communityServices.some(s => s && s.toLowerCase().includes('counseling')));
+    setCheckbox('RESOURCE VOLUNTEER', communityServices.some(s => s && s.toLowerCase().includes('volunteer')));
+    setCheckbox('DENTAL COMMUNITY SERVICE', communityServices.some(s => s && s.toLowerCase().includes('dental')));
+    setCheckbox('LEAGAL SERVICES COMMUNITY SERVICE', communityServices.some(s => s && s.toLowerCase().includes('legal')));
+    setCheckbox('COMMUNITY BEAUTIFICATION', communityServices.some(s => s && s.toLowerCase().includes('beautification')));
+    setCheckbox('FRIENDLY VISIT', communityServices.some(s => s && s.toLowerCase().includes('friendly')));
+    setCheckbox('RELIGIOUS', communityServices.some(s => s && s.toLowerCase().includes('religious')));
+    
+    if (seniorRecord.community_service_other_text) {
+      setText('COMMUNITY SERVICE OTHER TEXT', seniorRecord.community_service_other_text);
+      setCheckbox('OTHERS COMMUNITY SERCVICE', true);
+      setCheckbox('OTHERS COMMUNITY SERVICE', true);
+    }
+    
+    // Try to flatten the form, but continue if it fails (some PDFs have broken references)
+    try {
+      form.flatten();
+    } catch (flattenError) {
+      console.warn('[Senior PDF] Could not flatten form, saving without flattening:', flattenError.message);
+      // Continue without flattening - the form will still be filled
+    }
+    
+    const pdfBytes = await pdfDoc.save();
+    const safeLast = (name.last_name || 'Senior').replace(/\s+/g, '-');
+    const safeFirst = (name.first_name || 'Record').replace(/\s+/g, '-');
+    const filename = `Senior-${safeLast}-${safeFirst}.pdf`;
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename="${encodeURIComponent(filename)}"`);
+    res.setHeader('Content-Length', pdfBytes.length);
+    return res.send(pdfBytes);
+  } catch (error) {
+    console.error('Error generating Senior PDF:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to generate Senior PDF'
+    });
+  }
+};
+
+// Generate Youth Application PDF
+exports.generateYouthApplicationPdf = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid Youth ID'
+      });
+    }
+
+    const youthRecord = await Youth.findById(id).lean();
+
+    if (!youthRecord) {
+      return res.status(404).json({
+        success: false,
+        message: 'Youth record not found'
+      });
+    }
+
+    const templatePath = path.join(__dirname, '../default/pdf/YOUTH-FORMFIELD.pdf');
+    const templateBytes = await fs.promises.readFile(templatePath);
+    const pdfDoc = await PDFDocument.load(templateBytes);
+    const form = pdfDoc.getForm();
+
+    const shouldLogDebug = process.env.NODE_ENV !== 'production';
+    const warnMissingField = (msg) => {
+      if (shouldLogDebug) {
+        console.warn(`[Youth PDF] ${msg}`);
+      }
+    };
+
+    const setText = (fieldName, value = '') => {
+      if (!fieldName) return;
+      try {
+        const field = form.getTextField(fieldName);
+        field.setText(String(value || ''));
+      } catch (err) {
+        warnMissingField(`Text field "${fieldName}" not found`);
+      }
+    };
+
+    const setCheckbox = (fieldName, checked) => {
+      if (!fieldName) return;
+      try {
+        const field = form.getCheckBox(fieldName);
+        if (checked) {
+          field.check();
+        } else {
+          field.uncheck();
+        }
+      } catch (err) {
+        warnMissingField(`Checkbox "${fieldName}" not found`);
+      }
+    };
+
+    const formatDate = (value) => {
+      if (!value) return '';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return '';
+      const month = `${date.getMonth() + 1}`.padStart(2, '0');
+      const day = `${date.getDate()}`.padStart(2, '0');
+      const year = date.getFullYear();
+      return `${month}/${day}/${year}`;
+    };
+
+    // Basic Information - Using actual PDF field names
+    setText('LAST NAME', youthRecord.last_name || '');
+    setText('FIRST NAME', youthRecord.first_name || '');
+    setText('MIDDLE NAME', youthRecord.middle_name || '');
+    setText('BARANGAY', youthRecord.barangay || '');
+    setText('PUROK', youthRecord.purok || '');
+    setText('Birthday', formatDate(youthRecord.birthday));
+    setText('Age', String(youthRecord.age || ''));
+    setText('Contact', youthRecord.contact || '');
+    setText('Email Address', ''); // Not in schema
+    
+    // Gender checkboxes
+    setCheckbox('MALE', youthRecord.gender === 'Male');
+    setCheckbox('FEMALE', youthRecord.gender === 'Female');
+    
+    // Civil Status checkboxes
+    const civilStatus = youthRecord.civil_status || '';
+    setCheckbox('SINGLE', civilStatus.includes('Single'));
+    setCheckbox('MARRIED', civilStatus === 'Married');
+    setCheckbox('WIDOWED', civilStatus === 'Widowed');
+    setCheckbox('DIVORCED', civilStatus === 'Divorced');
+    setCheckbox('SEPERATED', civilStatus === 'Separated');
+    setCheckbox('ANNULLED', civilStatus === 'Annulled');
+    setCheckbox('LIVE IN', civilStatus === 'Cohabitation (live-in)');
+    
+    // Youth Classification
+    const classifications = Array.isArray(youthRecord.youth_classification) ? youthRecord.youth_classification : [];
+    setCheckbox('IN SCHOOL YOUTH', classifications.some(c => c && c.toLowerCase().includes('in school')));
+    setCheckbox('OUT OF SCHOOL YOUTH', classifications.some(c => c && c.toLowerCase().includes('out of school')));
+    setCheckbox('WORKING YOUTH', classifications.some(c => c && c.toLowerCase().includes('working')));
+    setCheckbox('YOUTH W/ SPECIFIC NEEDS', classifications.some(c => c && c.toLowerCase().includes('specific needs')));
+    
+    // Youth Age Group
+    const ageGroups = Array.isArray(youthRecord.youth_age_group) ? youthRecord.youth_age_group : [];
+    setCheckbox('CHILD YOUTH', ageGroups.some(a => a && a.toLowerCase().includes('15-17')));
+    setCheckbox('CORE YOUTH', ageGroups.some(a => a && a.toLowerCase().includes('18-24')));
+    setCheckbox('YOUNG ADULT', ageGroups.some(a => a && a.toLowerCase().includes('15-30')));
+    
+    // Employment Status
+    setCheckbox('EMPLOYED', youthRecord.employment_status === 'Employee' || youthRecord.employment_status === 'Employed');
+    setCheckbox('UNEMPLOYED', youthRecord.employment_status === 'Unemployed');
+    setCheckbox('SELF EMPLOYED', youthRecord.employment_status === 'Self-employed' || youthRecord.employment_status === 'Selfemployed');
+    
+    // Education Level
+    const educationLevel = youthRecord.education_level || '';
+    setCheckbox('ELEMENTARY LEVEL', educationLevel.includes('Elementary Level'));
+    setCheckbox('ELEMENTARY GRAD', educationLevel.includes('Elementary Graduate'));
+    setCheckbox('HIGHSCHOOL LEVEL', educationLevel.includes('High School Level'));
+    setCheckbox('HIGHSCHOOL GRAD', educationLevel.includes('High School Graduate'));
+    setCheckbox('VOCATIONAL GRAD', educationLevel.includes('Vocational'));
+    setCheckbox('COLLEGE LEVEL', educationLevel.includes('College Level'));
+    setCheckbox('COLLEGE GRAD', educationLevel.includes('College Graduate'));
+    setCheckbox('MASTERS LEVEL', educationLevel.includes('Masters'));
+    setCheckbox('MASTERS GRAD', educationLevel.includes('Masters Graduate'));
+    setCheckbox('DOCTORATE LEVEL', educationLevel.includes('Doctorate'));
+    
+    // SK Voter
+    setCheckbox('SK VOTER YES', youthRecord.registered_sk === 'Yes');
+    setCheckbox('SK VOTER NO', youthRecord.registered_sk === 'No');
+    
+    // National Voter
+    setCheckbox('NATIONAL VOTER YES', youthRecord.registered_national === 'Yes');
+    setCheckbox('NATIONAL VOTER NO', youthRecord.registered_national === 'No');
+    
+    // Assembly
+    setCheckbox('ASSEMBLY YES', youthRecord.Assembly === 'Yes');
+    setCheckbox('ASSEMBLY NO', youthRecord.Assembly === 'No');
+    
+    // SK Election
+    setCheckbox('SK ELECTION YES', youthRecord.voted_sk === 'Yes');
+    setCheckbox('SK ELECTION NO', youthRecord.voted_sk === 'No');
+    
+    // Assembly Times
+    const skTimes = youthRecord.sk_times || '';
+    setCheckbox('HOW MANY TIMES 1-2', skTimes === '1-2');
+    setCheckbox('HOW MANY TIMES 3-4', skTimes === '3-4');
+    setCheckbox('HOW MANY TIMES 5 AND ABOVE', skTimes === '5+');
+    
+    // Assembly Reason
+    const reason = youthRecord.reason || '';
+    setCheckbox('THERE WAS NO KK ASSEMBLY MEETING', reason.includes('No KK Assembly Meeting'));
+    setCheckbox('NOT INTERESTED TO ATTEND', reason.includes('Not interested'));
+    
+    // Try to flatten the form, but continue if it fails (some PDFs have broken references)
+    try {
+      form.flatten();
+    } catch (flattenError) {
+      console.warn('[Youth PDF] Could not flatten form, saving without flattening:', flattenError.message);
+      // Continue without flattening - the form will still be filled
+    }
+    
+    const pdfBytes = await pdfDoc.save();
+    const safeLast = (youthRecord.last_name || 'Youth').replace(/\s+/g, '-');
+    const safeFirst = (youthRecord.first_name || 'Record').replace(/\s+/g, '-');
+    const filename = `Youth-${safeLast}-${safeFirst}.pdf`;
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename="${encodeURIComponent(filename)}"`);
+    res.setHeader('Content-Length', pdfBytes.length);
+    return res.send(pdfBytes);
+  } catch (error) {
+    console.error('Error generating Youth PDF:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to generate Youth PDF'
     });
   }
 };

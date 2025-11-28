@@ -588,8 +588,10 @@
             </div>
             
             <div class="modal-footer flex-footer">
+				<button type="button" class="btn btn-outline-primary" id="printApplicationBtn" disabled>
+					<i data-feather="printer" style="width: 16px; height: 16px;"></i> Print Application
+				</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                
             </div>
         </div>
     </div>
@@ -790,13 +792,43 @@
         </div>
     </div>
 
+    <script type="application/json" id="barangays-json"><%- JSON.stringify(barangays || {}).replace(/<\/script/gi, '<\\/script') %></script>
+    <script type="application/json" id="senior-citizens-json"><%- JSON.stringify(seniorCitizens || []).replace(/<\/script/gi, '<\\/script') %></script>
     <script>
         // Convert EJS data to JavaScript object
-        const barangaysData = <%- JSON.stringify(barangays) %>;
-        const seniorCitizensData = <%- JSON.stringify(seniorCitizens) %>;
+        const barangaysData = JSON.parse(document.getElementById('barangays-json').textContent || '{}');
+        const seniorCitizensData = JSON.parse(document.getElementById('senior-citizens-json').textContent || '[]');
         
         // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
+            // Print Application Button Handler
+            const printApplicationBtn = document.getElementById('printApplicationBtn');
+            if (printApplicationBtn) {
+                printApplicationBtn.addEventListener('click', function() {
+                    const recordId = this.dataset.seniorId;
+                    if (!recordId) {
+                        alert('Please open a Senior Citizen record before printing.');
+                        return;
+                    }
+
+                    const pdfUrl = `/senior/${recordId}/application-pdf`;
+                    console.log('Opening PDF URL:', pdfUrl);
+                    
+                    // Use link element method which is more reliable and less likely to be blocked
+                    const link = document.createElement('a');
+                    link.href = pdfUrl;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    
+                    // Remove link after a short delay
+                    setTimeout(function() {
+                        document.body.removeChild(link);
+                    }, 100);
+                });
+            }
             // Initialize Generate Report Button
             const generateReportBtn = document.getElementById('generateReportBtn');
             
@@ -1246,6 +1278,13 @@
                         } else {
                             document.getElementById('displayEditedBy').textContent = 'N/A';
                             document.getElementById('displayEditedAt').textContent = 'N/A';
+                        }
+                        
+                        // Store the senior ID for print button
+                        const printBtn = document.getElementById('printApplicationBtn');
+                        if (printBtn) {
+                            printBtn.dataset.seniorId = seniorData._id;
+                            printBtn.disabled = false;
                         }
                         
                         // Show the view modal

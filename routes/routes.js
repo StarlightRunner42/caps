@@ -108,6 +108,8 @@ router.get('/Senior-form', requireAuth, controller.renderSeniorForm);
 
 router.get('/Pwd-form', requireAuth, controller.renderPWDForm);
 router.get('/pwd/:id/application-pdf', requireAuth, controller.generatePwdApplicationPdf);
+router.get('/senior/:id/application-pdf', requireAuth, controller.generateSeniorApplicationPdf);
+router.get('/youth/:id/application-pdf', requireAuth, controller.generateYouthApplicationPdf);
 
 //Youth routes
 router.get('', requireAuth, (req, res) => {

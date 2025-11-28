@@ -226,6 +226,7 @@
 															<td>
 																<div class="action-container">
 																	<button class="action  view-btn" aria-label="View" data-toggle="modal" data-target="#viewModal"
+																		data-youth-id="<%= youth._id %>"
 																		data-first-name="<%= youth.first_name %>"
 																		data-middle-name="<%= youth.middle_name %>"
 																		data-last-name="<%= youth.last_name %>"
@@ -418,8 +419,10 @@
                 </div>
             </div>
             <div class="modal-footer flex-footer">
+				<button type="button" class="btn btn-outline-primary" id="printApplicationBtn" disabled>
+					<i data-feather="printer" style="width: 16px; height: 16px;"></i> Print Application
+				</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                
             </div>
 
             </div>
@@ -1127,6 +1130,7 @@ Thank you!</textarea>
 
 					// Get data from button attributes, parsing arrays where needed
 					const youthData = {
+						youthId: $button.data('youth-id') || $button.attr('data-youth-id') || '',
 						firstName: $button.data('first-name') || '',
 						middleName: $button.data('middle-name') || '',
 						lastName: $button.data('last-name') || '',
@@ -1276,6 +1280,53 @@ Thank you!</textarea>
 						$('#displayEditedBy').text('N/A');
 						$('#displayEditedAt').text('N/A');
 					}
+					
+					// Store the youth ID for print button
+					const printBtn = document.getElementById('printApplicationBtn');
+					if (printBtn) {
+						const youthId = data.youthId || '';
+						printBtn.dataset.youthId = youthId;
+						printBtn.disabled = !youthId;
+					}
+				}
+			});
+			
+			// Print Application Button Handler
+			$(document).ready(function() {
+				const printApplicationBtn = document.getElementById('printApplicationBtn');
+				if (printApplicationBtn) {
+					printApplicationBtn.addEventListener('click', function(e) {
+						e.preventDefault();
+						e.stopPropagation();
+						
+						const recordId = this.dataset.youthId;
+						console.log('Print button clicked, Youth ID:', recordId);
+						
+						if (!recordId) {
+							alert('Please open a Youth record before printing.');
+							return;
+						}
+
+						const pdfUrl = `/youth/${recordId}/application-pdf`;
+						console.log('Opening PDF URL:', pdfUrl);
+						
+						// Try to open the PDF
+						try {
+							// Method 1: Use window.open() directly
+							const pdfWindow = window.open(pdfUrl, '_blank');
+							if (!pdfWindow) {
+								console.error('Failed to open window - popup may be blocked');
+								alert('Could not open PDF. Popup blocker may be enabled.');
+								return;
+							}
+							console.log('PDF window opened successfully');
+						} catch (error) {
+							console.error('Error opening PDF:', error);
+							alert('Error opening PDF: ' + error.message);
+						}
+					});
+				} else {
+					console.error('Print Application button not found!');
 				}
 			});
 		</script>
