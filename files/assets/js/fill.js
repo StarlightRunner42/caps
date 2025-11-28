@@ -290,7 +290,7 @@ async function submitForm() {
       service_business_employment: formData.get('service'),
       current_pension: formData.get('pension'),
       capability_to_travel: formData.get('capability_to_travel') === 'Yes' ? 'Yes' : 'No',
-      religion: formData.get('place_of_birth') // Note: This field is used for religion in your form
+      religion: formData.get('religion')
     },
     family_composition: {
       spouse: {

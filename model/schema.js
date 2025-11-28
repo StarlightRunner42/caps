@@ -30,6 +30,7 @@ const SeniorCitizenSchema = new mongoose.Schema({
     date_of_birth: { type: Date },
     age: { type: Number, required: true },
     place_of_birth: { type: [String] },
+    religion: { type: [String] },
     marital_status: { type: String, required: true },
     gender: { type: String, required: true },
     contacts: [{

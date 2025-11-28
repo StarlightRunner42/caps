@@ -174,6 +174,7 @@ exports.logout = (req, res) => {
           place_of_birth: Array.isArray(body.identifying_information?.place_of_birth)
             ? body.identifying_information.place_of_birth.filter(Boolean)
             : [body.identifying_information?.place_of_birth].filter(Boolean),
+          religion: body.identifying_information?.religion,
           marital_status: body.identifying_information?.marital_status,
           gender: body.identifying_information?.gender,
           contacts: Array.isArray(body.identifying_information?.contacts)
