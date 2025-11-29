@@ -317,6 +317,59 @@ define([
 
       const pwdPercentage = ((b.pwdCount / b.population) * 100).toFixed(1);
 
+      // Format disabilities HTML
+      let disabilitiesHtml = '';
+      if (b.disabilities && b.disabilities.length > 0) {
+        disabilitiesHtml = `
+          <div style="margin-top: 15px; padding-top: 15px; border-top: 2px solid #ecf0f1;">
+            <div style="font-size: 13px; font-weight: 600; color: #2c3e50; margin-bottom: 10px;">
+              Disability Types:
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              ${b.disabilities.map(disability => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: #f8f9fa; border-radius: 5px; border-left: 3px solid #e74c3c;">
+                  <span style="font-size: 12px; color: #34495e;">${disability.type}</span>
+                  <span style="font-size: 13px; font-weight: 700; color: #e74c3c;">${disability.count}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // Build the popup content HTML
+      const popupContent = `
+        <div style="padding: 10px; font-family: 'Segoe UI', sans-serif;">
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px;">
+            <div style="text-align: center; padding: 10px; background: #ecf0f1; border-radius: 8px;">
+              <strong style="font-size: 18px; color: #2c3e50;">${b.pwdCount}</strong>
+              <div style="font-size: 12px; color: #7f8c8d;">PWDs</div>
+            </div>
+            <div style="text-align: center; padding: 10px; background: #ecf0f1; border-radius: 8px;">
+              <strong style="font-size: 18px; color: #2c3e50;">${pwdPercentage}%</strong>
+              <div style="font-size: 12px; color: #7f8c8d;">of Population</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px;">
+            <div style="text-align: center; padding: 8px; background: #3498db; color: white; border-radius: 6px;">
+              <strong>${b.maleCount}</strong>
+              <div style="font-size: 10px;">Male</div>
+            </div>
+            <div style="text-align: center; padding: 8px; background: #e91e63; color: white; border-radius: 6px;">
+              <strong>${b.femaleCount}</strong>
+              <div style="font-size: 10px;">Female</div>
+            </div>
+          </div>
+          <div style="padding: 8px; background: linear-gradient(90deg, #e74c3c, #c0392b); color: white; border-radius: 6px; text-align: center;">
+            <strong>Population: ${b.population}</strong>
+          </div>
+          ${disabilitiesHtml}
+          <div style="margin-top: 10px; font-size: 12px; color: #7f8c8d; text-align: center;">
+            Category: <strong>${category}</strong> PWD Concentration
+          </div>
+        </div>
+      `;
+
       const pointGraphic = new Graphic({
         geometry: point,
         symbol: markerSymbol,
@@ -331,36 +384,7 @@ define([
         },
         popupTemplate: {
           title: "{name}",
-          content: `
-            <div style="padding: 10px; font-family: 'Segoe UI', sans-serif;">
-              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px;">
-                <div style="text-align: center; padding: 10px; background: #ecf0f1; border-radius: 8px;">
-                  <strong style="font-size: 18px; color: #2c3e50;">{pwdCount}</strong>
-                  <div style="font-size: 12px; color: #7f8c8d;">PWDs</div>
-                </div>
-                <div style="text-align: center; padding: 10px; background: #ecf0f1; border-radius: 8px;">
-                  <strong style="font-size: 18px; color: #2c3e50;">{percentage}%</strong>
-                  <div style="font-size: 12px; color: #7f8c8d;">of Population</div>
-                </div>
-              </div>
-              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px;">
-                <div style="text-align: center; padding: 8px; background: #3498db; color: white; border-radius: 6px;">
-                  <strong>{maleCount}</strong>
-                  <div style="font-size: 10px;">Male</div>
-                </div>
-                <div style="text-align: center; padding: 8px; background: #e91e63; color: white; border-radius: 6px;">
-                  <strong>{femaleCount}</strong>
-                  <div style="font-size: 10px;">Female</div>
-                </div>
-              </div>
-              <div style="padding: 8px; background: linear-gradient(90deg, #e74c3c, #c0392b); color: white; border-radius: 6px; text-align: center;">
-                <strong>Population: {population}</strong>
-              </div>
-              <div style="margin-top: 10px; font-size: 12px; color: #7f8c8d; text-align: center;">
-                Category: <strong>{category}</strong> PWD Concentration
-              </div>
-            </div>
-          `
+          content: popupContent
         }
       });
 
@@ -567,8 +591,8 @@ define([
         // Update statistics panel
         updateStatistics(barangays);
         
-        // Update data table
-        updateDataTable(barangays);
+        // Update data table (commented out - function is not used)
+        // updateDataTable(barangays);
         
         console.log("✅ PWD data loaded successfully from database:", barangays);
       } else {

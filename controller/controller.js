@@ -2353,7 +2353,41 @@ exports.getPwdMapData = async (req, res) => {
       { $sort: { _id: 1 } }
     ]);
 
+    // Get disability counts by barangay
+    const disabilityCounts = await PWD.aggregate([
+      {
+        $match: {
+          status: { $ne: 'Archived' },
+          disability: { $exists: true, $ne: [] }
+        }
+      },
+      {
+        $unwind: "$disability"
+      },
+      {
+        $group: {
+          _id: {
+            barangay: "$barangay",
+            disability: "$disability"
+          },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $group: {
+          _id: "$_id.barangay",
+          disabilities: {
+            $push: {
+              type: "$_id.disability",
+              count: "$count"
+            }
+          }
+        }
+      }
+    ]);
+
     console.log('📊 PWD counts from database:', pwdCounts);
+    console.log('📊 Disability counts from database:', disabilityCounts);
 
     // Define barangay coordinates and other data - Updated to match database names
     const barangayData = [
@@ -2375,10 +2409,38 @@ exports.getPwdMapData = async (req, res) => {
       { name: "Barangay Lantad", lat: 10.80845, lon: 122.97199, population: 2400 }
     ];
 
+    // Helper function to find matching barangay data
+    const findMatchingData = (barangayName, dataArray) => {
+      // Try exact match first
+      let match = dataArray.find(item => item._id === barangayName);
+      if (match) return match;
+      
+      // Try case-insensitive match
+      match = dataArray.find(item => 
+        item._id && item._id.toLowerCase() === barangayName.toLowerCase()
+      );
+      if (match) return match;
+      
+      // Try partial match for common variations
+      match = dataArray.find(item => {
+        if (!item._id) return false;
+        const dbName = item._id.toLowerCase();
+        const mapName = barangayName.toLowerCase();
+        
+        // Check for common variations
+        return dbName.includes(mapName) || 
+               mapName.includes(dbName) ||
+               dbName.includes('hawaiian') && mapName.includes('hawaiian') ||
+               dbName.includes('poblacion') && mapName.includes('poblacion');
+      });
+      
+      return match || null;
+    };
+
     // Merge database counts with barangay data
     const result = barangayData.map(barangay => {
-      // Try exact match first
-      let countData = pwdCounts.find(item => item._id === barangay.name);
+      // Get PWD count data
+      let countData = findMatchingData(barangay.name, pwdCounts);
       let pwdCount = 0;
       let maleCount = 0;
       let femaleCount = 0;
@@ -2387,43 +2449,30 @@ exports.getPwdMapData = async (req, res) => {
         pwdCount = countData.pwdCount;
         maleCount = countData.maleCount;
         femaleCount = countData.femaleCount;
-      } else {
-        // Try case-insensitive match
-        countData = pwdCounts.find(item => 
-          item._id && item._id.toLowerCase() === barangay.name.toLowerCase()
-        );
-        if (countData) {
-          pwdCount = countData.pwdCount;
-          maleCount = countData.maleCount;
-          femaleCount = countData.femaleCount;
-        } else {
-          // Try partial match for common variations
-          countData = pwdCounts.find(item => {
-            if (!item._id) return false;
-            const dbName = item._id.toLowerCase();
-            const mapName = barangay.name.toLowerCase();
-            
-            // Check for common variations
-            return dbName.includes(mapName) || 
-                   mapName.includes(dbName) ||
-                   dbName.includes('hawaiian') && mapName.includes('hawaiian') ||
-                   dbName.includes('poblacion') && mapName.includes('poblacion');
-          });
-          if (countData) {
-            pwdCount = countData.pwdCount;
-            maleCount = countData.maleCount;
-            femaleCount = countData.femaleCount;
-          }
-        }
+      }
+      
+      // Get disability data
+      let disabilityData = findMatchingData(barangay.name, disabilityCounts);
+      let disabilities = [];
+      
+      if (disabilityData && disabilityData.disabilities) {
+        // Filter out disabilities with count 0 and sort by count descending
+        disabilities = disabilityData.disabilities
+          .filter(d => d.count > 0)
+          .sort((a, b) => b.count - a.count);
       }
       
       console.log(`📍 ${barangay.name}: ${pwdCount} PWDs (${maleCount}M, ${femaleCount}F) (matched with: ${countData ? countData._id : 'none'})`);
+      if (disabilities.length > 0) {
+        console.log(`   Disabilities: ${disabilities.map(d => `${d.type} (${d.count})`).join(', ')}`);
+      }
       
       return {
         ...barangay,
         pwdCount: pwdCount,
         maleCount: maleCount,
-        femaleCount: femaleCount
+        femaleCount: femaleCount,
+        disabilities: disabilities
       };
     });
 
