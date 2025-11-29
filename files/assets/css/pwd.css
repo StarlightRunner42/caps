@@ -148,7 +148,7 @@ label {
   color: white;
   font-weight: var(--font-weight-semibold);
   text-align: left;
-  padding: 20px 24px;
+  padding: 20px;
   font-size: 14px;
   letter-spacing: 0.025em;
   text-transform: uppercase;
@@ -178,8 +178,8 @@ label {
 }
 
 #example td {
-  padding: 20px 24px;
-  font-size: 14px;
+  padding: 12px;
+  font-size: 11px;
   color: var(--text-primary);
   font-weight: var(--font-weight-medium);
   vertical-align: middle;
@@ -437,8 +437,7 @@ label {
 }
 
 .modal-dialog {
-  max-width: 900px;
-  width: 100%;
+  max-width: 700px;
   margin: 1rem auto;
   height: auto;
   max-height: 90vh;
@@ -446,7 +445,7 @@ label {
 
 .modal-header {
   border-bottom: 1px solid #f0f0f0;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem ;
   background-color: #f8f9fa;
   border-radius: 8px 8px 0 0;
   flex-shrink: 0;

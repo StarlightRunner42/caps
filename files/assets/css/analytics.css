@@ -35,7 +35,7 @@
 
 .stat-card {
   background: rgba(255, 255, 255, 0.95);
-  padding: 25px;
+  padding: 15px;
   border-radius: 15px;
   text-align: center;
   box-shadow: 0 8px 32px rgba(0,0,0,0.1);
@@ -50,7 +50,7 @@
 }
 
 .stat-number {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: bold;
   color: #061727;
   margin-bottom: 10px;
@@ -75,13 +75,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 25px 30px;
+  padding: 25px;
   background: #061727;
   color: white;
 }
 
 .table-title {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -121,15 +121,15 @@
 }
 
 .data-table th {
-  padding: 16px;
+  padding: 10px;
   text-align: left;
-  font-weight: 600;
+  font-weight: 500;
   color: #333;
   border-bottom: 2px solid #e9ecef;
 }
 
 .data-table td {
-  padding: 18px 20px;
+  padding: 8px;
   border-bottom: 1px solid #e9ecef;
   transition: background-color 0.2s ease;
 }
@@ -153,7 +153,7 @@
   background: #061727;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 8px;
   border-radius: 20px;
   cursor: pointer;
   font-size: 0.9rem;
@@ -170,7 +170,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 25px 30px;
+  padding: 20px;
   background: #f8f9fa;
 }
 
@@ -185,7 +185,7 @@
 }
 
 .page-btn {
-  padding: 10px 15px;
+  padding: 10px;
   border: 1px solid #ddd;
   background: white;
   color: #333;
@@ -468,4 +468,10 @@
     font-size: 0.85rem;
     padding: 10px;
   }
+}
+
+.btn.btn-info {
+  border-radius: 20px;
+  background: #032c53;
+  color: white;
 }
