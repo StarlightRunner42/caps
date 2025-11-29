@@ -330,7 +330,10 @@ define([
           nationalRegistered: b.nationalRegistered,
           population: b.population,
           percentage: youthPercentage,
-          category: category
+          category: category,
+          employeeCount: b.employeeCount || 0,
+          unemployedCount: b.unemployedCount || 0,
+          selfEmployedCount: b.selfEmployedCount || 0
         },
         popupTemplate: {
           title: "{name}",
@@ -372,6 +375,25 @@ define([
               </div>
               <div style="padding: 8px; background: linear-gradient(90deg, #9b59b6, #8e44ad); color: white; border-radius: 6px; text-align: center;">
                 <strong>Population: {population}</strong>
+              </div>
+              <div style="margin-top: 15px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #9b59b6;">
+                <div style="font-size: 13px; font-weight: 600; color: #2c3e50; margin-bottom: 10px; text-align: center;">
+                  Employment Status
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                  <div style="text-align: center; padding: 8px; background: #3498db; color: white; border-radius: 6px;">
+                    <strong style="font-size: 16px;">{employeeCount}</strong>
+                    <div style="font-size: 10px; margin-top: 4px;">Employee</div>
+                  </div>
+                  <div style="text-align: center; padding: 8px; background: #e74c3c; color: white; border-radius: 6px;">
+                    <strong style="font-size: 16px;">{unemployedCount}</strong>
+                    <div style="font-size: 10px; margin-top: 4px;">Unemployed</div>
+                  </div>
+                  <div style="text-align: center; padding: 8px; background: #f39c12; color: white; border-radius: 6px;">
+                    <strong style="font-size: 16px;">{selfEmployedCount}</strong>
+                    <div style="font-size: 10px; margin-top: 4px;">Self-Employed</div>
+                  </div>
+                </div>
               </div>
               <div style="margin-top: 10px; font-size: 12px; color: #7f8c8d; text-align: center;">
                 Category: <strong>{category}</strong> Youth Concentration
@@ -604,7 +626,7 @@ define([
         updateStatistics(barangays);
         
         // Update data table
-        updateDataTable(barangays);
+        // updateDataTable(barangays);
         
         console.log("✅ Youth data loaded successfully from database:", barangays);
       } else {

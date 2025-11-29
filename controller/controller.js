@@ -2454,7 +2454,10 @@ exports.getYouthMapData = async (req, res) => {
           femaleCount: { $sum: { $cond: [{ $eq: ["$gender", "Female"] }, 1, 0] } },
           skRegistered: { $sum: { $cond: [{ $eq: ["$registered_sk", "Yes"] }, 1, 0] } },
           skVoted: { $sum: { $cond: [{ $eq: ["$voted_sk", "Yes"] }, 1, 0] } },
-          nationalRegistered: { $sum: { $cond: [{ $eq: ["$registered_national", "Yes"] }, 1, 0] } }
+          nationalRegistered: { $sum: { $cond: [{ $eq: ["$registered_national", "Yes"] }, 1, 0] } },
+          employeeCount: { $sum: { $cond: [{ $eq: ["$employment_status", "Employee"] }, 1, 0] } },
+          unemployedCount: { $sum: { $cond: [{ $eq: ["$employment_status", "Unemployed"] }, 1, 0] } },
+          selfEmployedCount: { $sum: { $cond: [{ $eq: ["$employment_status", "Self-employed"] }, 1, 0] } }
         }
       },
       { $sort: { _id: 1 } }
@@ -2492,6 +2495,9 @@ exports.getYouthMapData = async (req, res) => {
       let skRegistered = 0;
       let skVoted = 0;
       let nationalRegistered = 0;
+      let employeeCount = 0;
+      let unemployedCount = 0;
+      let selfEmployedCount = 0;
       
       if (countData) {
         youthCount = countData.youthCount;
@@ -2500,6 +2506,9 @@ exports.getYouthMapData = async (req, res) => {
         skRegistered = countData.skRegistered;
         skVoted = countData.skVoted;
         nationalRegistered = countData.nationalRegistered;
+        employeeCount = countData.employeeCount || 0;
+        unemployedCount = countData.unemployedCount || 0;
+        selfEmployedCount = countData.selfEmployedCount || 0;
       } else {
         // Try case-insensitive match
         countData = youthCounts.find(item => 
@@ -2512,6 +2521,9 @@ exports.getYouthMapData = async (req, res) => {
           skRegistered = countData.skRegistered;
           skVoted = countData.skVoted;
           nationalRegistered = countData.nationalRegistered;
+          employeeCount = countData.employeeCount || 0;
+          unemployedCount = countData.unemployedCount || 0;
+          selfEmployedCount = countData.selfEmployedCount || 0;
         } else {
           // Try partial match for common variations
           countData = youthCounts.find(item => {
@@ -2532,6 +2544,9 @@ exports.getYouthMapData = async (req, res) => {
             skRegistered = countData.skRegistered;
             skVoted = countData.skVoted;
             nationalRegistered = countData.nationalRegistered;
+            employeeCount = countData.employeeCount || 0;
+            unemployedCount = countData.unemployedCount || 0;
+            selfEmployedCount = countData.selfEmployedCount || 0;
           }
         }
       }
@@ -2545,7 +2560,10 @@ exports.getYouthMapData = async (req, res) => {
         femaleCount: femaleCount,
         skRegistered: skRegistered,
         skVoted: skVoted,
-        nationalRegistered: nationalRegistered
+        nationalRegistered: nationalRegistered,
+        employeeCount: employeeCount,
+        unemployedCount: unemployedCount,
+        selfEmployedCount: selfEmployedCount
       };
     });
 
