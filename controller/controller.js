@@ -2655,7 +2655,7 @@ exports.getSeniorMapData = async (req, res) => {
     const allSeniors = await SeniorCitizen.find({ status: { $ne: 'Archived' } }, 'identifying_information.address.barangay');
     console.log('🔍 All barangay names in database:', allSeniors.map(s => s.identifying_information.address.barangay));
     
-    // Get senior count by barangay
+    // Get senior count by barangay with gender breakdown
     const seniorCounts = await SeniorCitizen.aggregate([
       {
         $match: {
@@ -2665,7 +2665,9 @@ exports.getSeniorMapData = async (req, res) => {
       {
         $group: {
           _id: "$identifying_information.address.barangay",
-          seniorCount: { $sum: 1 }
+          seniorCount: { $sum: 1 },
+          maleCount: { $sum: { $cond: [{ $eq: ["$identifying_information.gender", "Male"] }, 1, 0] } },
+          femaleCount: { $sum: { $cond: [{ $eq: ["$identifying_information.gender", "Female"] }, 1, 0] } }
         }
       },
       { $sort: { _id: 1 } }
@@ -2698,9 +2700,13 @@ exports.getSeniorMapData = async (req, res) => {
       // Try exact match first
       let countData = seniorCounts.find(item => item._id === barangay.name);
       let seniorCount = 0;
+      let maleCount = 0;
+      let femaleCount = 0;
       
       if (countData) {
         seniorCount = countData.seniorCount;
+        maleCount = countData.maleCount || 0;
+        femaleCount = countData.femaleCount || 0;
       } else {
         // Try case-insensitive match
         countData = seniorCounts.find(item => 
@@ -2708,6 +2714,8 @@ exports.getSeniorMapData = async (req, res) => {
         );
         if (countData) {
           seniorCount = countData.seniorCount;
+          maleCount = countData.maleCount || 0;
+          femaleCount = countData.femaleCount || 0;
         } else {
           // Try partial match for common variations
           countData = seniorCounts.find(item => {
@@ -2723,6 +2731,8 @@ exports.getSeniorMapData = async (req, res) => {
           });
           if (countData) {
             seniorCount = countData.seniorCount;
+            maleCount = countData.maleCount || 0;
+            femaleCount = countData.femaleCount || 0;
           }
         }
       }
@@ -2731,7 +2741,9 @@ exports.getSeniorMapData = async (req, res) => {
       
       return {
         ...barangay,
-        seniorCount: seniorCount
+        seniorCount: seniorCount,
+        maleCount: maleCount,
+        femaleCount: femaleCount
       };
     });
 

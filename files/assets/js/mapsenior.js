@@ -325,6 +325,8 @@ define([
         attributes: { 
           name: b.name, 
           seniorCount: b.seniorCount,
+          maleCount: b.maleCount || 0,
+          femaleCount: b.femaleCount || 0,
           population: b.population,
           percentage: seniorPercentage,
           category: category
@@ -341,6 +343,16 @@ define([
                 <div style="text-align: center; padding: 10px; background: #ecf0f1; border-radius: 8px;">
                   <strong style="font-size: 18px; color: #2c3e50;">{percentage}%</strong>
                   <div style="font-size: 12px; color: #7f8c8d;">of Population</div>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px;">
+                <div style="text-align: center; padding: 8px; background: #3498db; color: white; border-radius: 6px;">
+                  <strong>{maleCount}</strong>
+                  <div style="font-size: 10px;">Male</div>
+                </div>
+                <div style="text-align: center; padding: 8px; background: #e91e63; color: white; border-radius: 6px;">
+                  <strong>{femaleCount}</strong>
+                  <div style="font-size: 10px;">Female</div>
                 </div>
               </div>
               <div style="padding: 8px; background: linear-gradient(90deg, #3498db, #2980b9); color: white; border-radius: 6px; text-align: center;">
@@ -546,7 +558,7 @@ define([
         updateStatistics(barangays);
         
         // Update data table
-        updateDataTable(barangays);
+        // updateDataTable(barangays);
         
         console.log("✅ Senior data loaded successfully from database:", barangays);
       } else {
