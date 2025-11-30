@@ -496,10 +496,48 @@ async function generateSeniorCitizensReport() {
             margin-top: 10px;
             font-style: italic;
         }
+
+        .print-button-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .print-button-container button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .print-button-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .table { margin-top: 20px; }
+        .summary { background: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 20px; }
+
+        @media print {
+            .print-button-container {
+                display: none;
+            }
+            body {
+                padding: 0;
+            }
+        }
     </style>
 </head>
 
 <body>
+<div class="print-button-container">
+    <button onclick="window.print()">🖨️ Print Report</button>
+</div>
 
 <div class="container">
     <div class="text-center generated-date">
