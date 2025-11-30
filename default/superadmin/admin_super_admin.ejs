@@ -179,25 +179,9 @@
 										<div class="content-area">
 											<div class="form-container active" id="form-barangay">
 												<form id="registerBarangay">
-													<div class="form-row">
-														<div class="form-col">
-															<label class="required" for="barangayName">Barangay Name</label>
-															<input type="text" id="barangayName" placeholder="Enter barangay name" required>
-														</div>
-														<div class="form-col">
-															<label class="required" for="barangayCode">Barangay Code</label>
-															<input type="text" id="barangayCode" placeholder="Enter unique code" required>
-														</div>
-													</div>
-													<div class="form-row">
-														<div class="form-col">
-															<label for="barangayCaptain">Barangay Captain</label>
-															<input type="text" id="barangayCaptain" placeholder="Enter captain's name">
-														</div>
-														<div class="form-col">
-															<label for="barangayContact">Contact Number</label>
-															<input type="text" id="barangayContact" placeholder="e.g. +63 998 765 4321">
-														</div>
+													<div class="form-group">
+														<label class="required" for="barangayName">Barangay Name</label>
+														<input type="text" id="barangayName" placeholder="Enter barangay name" required>
 													</div>
 													<button type="submit" class="btn">
 														<svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -205,6 +189,36 @@
 															<path d="M4.375 10H15.625" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
 														</svg> Register Barangay </button>
 												</form>
+												<div class="barangay-list-container" style="margin-top: 30px;">
+													<h3 style="margin-bottom: 15px; font-size: 18px; font-weight: 600;">Current Barangays and Puroks</h3>
+													<div id="barangayList" style="max-height: 400px; overflow-y: auto;">
+														<% if (typeof barangayList !== 'undefined' && barangayList.length > 0) { %>
+															<% barangayList.forEach(function(item) { %>
+																<div class="barangay-item" style="margin-bottom: 20px; padding: 15px; border: 1px solid #e0e0e0; border-radius: 8px; background: #f9f9f9;">
+																	<div style="font-weight: 600; font-size: 16px; margin-bottom: 10px; color: #333;">
+																		<%= item.barangay %>
+																	</div>
+																	<div style="margin-left: 15px;">
+																		<% if (item.puroks && item.puroks.length > 0) { %>
+																			<div style="font-size: 14px; color: #666; margin-bottom: 5px;">Puroks:</div>
+																			<ul style="margin: 0; padding-left: 20px; color: #555;">
+																				<% item.puroks.forEach(function(purok) { %>
+																					<li><%= purok %></li>
+																				<% }); %>
+																			</ul>
+																		<% } else { %>
+																			<div style="font-size: 14px; color: #999; font-style: italic;">No puroks added yet</div>
+																		<% } %>
+																	</div>
+																</div>
+															<% }); %>
+														<% } else { %>
+															<div style="padding: 20px; text-align: center; color: #999; font-style: italic;">
+																No barangays registered yet
+															</div>
+														<% } %>
+													</div>
+												</div>
 											</div>
 											<div class="form-container" id="form-purok">
 												<form id="registerPurok">
@@ -212,26 +226,16 @@
 														<label class="required" for="selectBarangay">Select Barangay</label>
 														<select id="selectBarangay" required>
 															<option value="" disabled selected>-- Select Barangay --</option>
-															<option value="1">Barangay 1</option>
-															<option value="2">Barangay 2</option>
-															<option value="3">Barangay 3</option>
-															<option value="4">Barangay 4</option>
-															<option value="5">Barangay 5</option>
+															<% if (typeof barangayList !== 'undefined' && barangayList.length > 0) { %>
+																<% barangayList.forEach(function(item) { %>
+																	<option value="<%= item._id.toString() %>"><%= item.barangay %></option>
+																<% }); %>
+															<% } %>
 														</select>
 													</div>
-													<div class="form-row">
-														<div class="form-col">
-															<label class="required" for="purokName">Purok Name</label>
-															<input type="text" id="purokName" placeholder="Enter purok name" required>
-														</div>
-														<div class="form-col">
-															<label class="required" for="purokNumber">Purok Number</label>
-															<input type="text" id="purokNumber" placeholder="Enter purok number" required>
-														</div>
-													</div>
 													<div class="form-group">
-														<label for="purokLeader">Purok Leader</label>
-														<input type="text" id="purokLeader" placeholder="Enter leader's name">
+														<label class="required" for="purokName">Purok Name</label>
+														<input type="text" id="purokName" placeholder="Enter purok name" required>
 													</div>
 													<button type="submit" class="btn">
 														<svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

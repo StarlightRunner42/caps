@@ -2884,5 +2884,113 @@ exports.updateUser = async (req, res) => {
   }
 };
 
+// Render superadmin page with barangays data
+exports.renderSuperAdmin = async (req, res) => {
+  try {
+    const barangayList = await Barangay.find({});
+    const barangays = {};
+    barangayList.forEach(({ barangay, puroks }) => {
+      barangays[barangay] = puroks || [];
+    });
+
+    res.render('superadmin/admin_super_admin', {
+      barangays: barangays || {},
+      barangayList: barangayList || []
+    });
+  } catch (err) {
+    console.error('Error fetching barangays:', err);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+// API: Get all barangays
+exports.getBarangays = async (req, res) => {
+  try {
+    const barangayList = await Barangay.find({});
+    const barangays = {};
+    barangayList.forEach(({ barangay, puroks }) => {
+      barangays[barangay] = puroks || [];
+    });
+
+    res.json({
+      success: true,
+      barangays: barangays,
+      barangayList: barangayList
+    });
+  } catch (err) {
+    console.error('Error fetching barangays:', err);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+// API: Create new barangay
+exports.createBarangay = async (req, res) => {
+  try {
+    const { barangayName } = req.body;
+
+    if (!barangayName || !barangayName.trim()) {
+      return res.status(400).json({ success: false, message: 'Barangay name is required' });
+    }
+
+    // Check if barangay already exists
+    const existingBarangay = await Barangay.findOne({ barangay: barangayName.trim() });
+    if (existingBarangay) {
+      return res.status(400).json({ success: false, message: 'Barangay already exists' });
+    }
+
+    // Create new barangay
+    const newBarangay = new Barangay({
+      barangay: barangayName.trim(),
+      puroks: []
+    });
+
+    await newBarangay.save();
+
+    res.json({
+      success: true,
+      message: 'Barangay created successfully',
+      barangay: newBarangay
+    });
+  } catch (err) {
+    console.error('Error creating barangay:', err);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+// API: Add purok to barangay
+exports.addPurok = async (req, res) => {
+  try {
+    const { barangayId, purokName } = req.body;
+
+    if (!barangayId || !purokName || !purokName.trim()) {
+      return res.status(400).json({ success: false, message: 'Barangay and purok name are required' });
+    }
+
+    // Find the barangay
+    const barangay = await Barangay.findById(barangayId);
+    if (!barangay) {
+      return res.status(404).json({ success: false, message: 'Barangay not found' });
+    }
+
+    // Check if purok already exists
+    if (barangay.puroks.includes(purokName.trim())) {
+      return res.status(400).json({ success: false, message: 'Purok already exists in this barangay' });
+    }
+
+    // Add purok to the barangay
+    barangay.puroks.push(purokName.trim());
+    await barangay.save();
+
+    res.json({
+      success: true,
+      message: 'Purok added successfully',
+      barangay: barangay
+    });
+  } catch (err) {
+    console.error('Error adding purok:', err);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
 
 

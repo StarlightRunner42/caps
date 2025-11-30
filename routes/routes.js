@@ -27,13 +27,9 @@ router.get('/Index', requireAuth, (req, res) => {
     res.render('admin/admin_index-1');
 });
 
-router.get('/superadmin', requireAuth, (req, res) => {
-    res.render('admin/admin_super_admin');
-});
+router.get('/superadmin', requireAuth, controller.renderSuperAdmin);
 
-router.get('/Admin', requireAuth, (req, res) => {
-    res.render('admin/admin_super_admin');
-});
+router.get('/Admin', requireAuth, controller.renderSuperAdmin);
 
 router.get('/Map', (req, res) => {
     res.render('admin/pwd_map');
@@ -130,6 +126,11 @@ router.get('/api/analytics/pdao', requireAuth, controller.getPdaoAnalytics);
 router.get('/api/analytics/youth', controller.getYouthAnalytics);
 router.get('/api/pwds', requireAuth, controller.getAllPwds);
 router.get('/api/senior-citizens-for-report', requireAuth, controller.getSeniorCitizensForReport);
+
+// Barangay and Purok APIs
+router.get('/api/barangays', requireAuth, controller.getBarangays);
+router.post('/api/barangay', requireAuth, controller.createBarangay);
+router.post('/api/purok', requireAuth, controller.addPurok);
 
 
 //ArcGIS routes
