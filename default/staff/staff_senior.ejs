@@ -422,7 +422,7 @@
                                                                             <th>Name</th>
                                                                             <th>Barangay</th>
                                                                             <th>Purok</th>
-                                                                            <th>Message</th>
+                                                                            <th style="max-width: 300px; min-width: 200px;">Message</th>
                                                                             <th>Status</th>
                                                                         </tr>
                                                                     </thead>
@@ -433,6 +433,16 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
+                                                            <style>
+                                                                #smsHistoryModal table td:nth-child(6) {
+                                                                    max-width: 300px;
+                                                                    min-width: 200px;
+                                                                    word-wrap: break-word;
+                                                                    overflow-wrap: break-word;
+                                                                    white-space: normal;
+                                                                    line-height: 1.4;
+                                                                }
+                                                            </style>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -2010,7 +2020,7 @@
                                     <td>${fullName || 'N/A'}</td>
                                     <td>${record.barangay || 'N/A'}</td>
                                     <td>${record.purok || 'N/A'}</td>
-                                    <td style="max-width: 200px; word-wrap: break-word;">${record.message || 'N/A'}</td>
+                                    <td style="max-width: 300px; min-width: 200px; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; line-height: 1.4;">${record.message || 'N/A'}</td>
                                     <td>${statusBadge}</td>
                                 `;
                                 tableBody.appendChild(row);

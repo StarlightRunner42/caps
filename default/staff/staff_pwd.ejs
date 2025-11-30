@@ -347,7 +347,7 @@
                                 <th>Name</th>
                                 <th>Barangay</th>
                                 <th>Purok</th>
-                                <th>Message</th>
+                                <th style="max-width: 300px; min-width: 200px;">Message</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -358,6 +358,16 @@
                         </tbody>
                     </table>
                 </div>
+                <style>
+                    #smsHistoryModal table td:nth-child(6) {
+                        max-width: 300px;
+                        min-width: 200px;
+                        word-wrap: break-word;
+                        overflow-wrap: break-word;
+                        white-space: normal;
+                        line-height: 1.4;
+                    }
+                </style>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -385,39 +395,39 @@
                 <!-- Top Row: Personal Information + Contact Information -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                     <!-- Left - Personal Information -->
-                    <fieldset class="compact-spacing">
+                    <fieldset class="compact-spacing" style="word-wrap: break-word; overflow-wrap: break-word;">
                         <legend>PERSONAL INFORMATION</legend>
-                        <p class="compact-spacing">
+                        <p class="compact-spacing" style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
                             <strong>Address:</strong>
                             <span id="displayBarangay"></span> 
                             <span id="displayPurok"></span>
                         </p>
-                        <p class="compact-spacing">
+                        <p class="compact-spacing" style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
                             <strong>Birthday:</strong>
                             <span id="displayBirthday"></span> 
                             (<span id="displayAge"></span> years old)
                         </p>
-                        <p class="compact-spacing">
+                        <p class="compact-spacing" style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
                             <strong>Gender:</strong>
                             <span id="displayGender"></span>
                         </p>
-                        <p class="compact-spacing">
+                        <p class="compact-spacing" style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
                             <strong>Civil Status:</strong>
                             <span id="displayCivilStatus"></span>
                         </p>
-                        <p class="compact-spacing">
+                        <p class="compact-spacing" style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
                             <strong>Place of Birth:</strong>
                             <span id="displayPlaceOfBirth"></span>
                         </p>
-                        <p id="displaySpouse" class="compact-spacing" style="display: none;">
+                        <p id="displaySpouse" class="compact-spacing" style="display: none; word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
                             <strong>Spouse Name:</strong>
                             <span id="displaySpouseName"></span>
                         </p>
-                        <p class="compact-spacing">
+                        <p class="compact-spacing" style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
                             <strong>Father's Name:</strong>
                             <span id="displayFatherName"></span>
                         </p>
-                        <p class="no-bottom-margin">
+                        <p class="no-bottom-margin" style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal;">
                             <strong>Mother's Name:</strong>
                             <span id="displayMotherName"></span>
                         </p>
@@ -2149,15 +2159,15 @@
 											? '<span class="badge badge-danger">Error</span>'
 											: '<span class="badge badge-warning">Skipped</span>';
 										
-										row.innerHTML = `
-											<td>${sentDate.toLocaleString()}</td>
-											<td>${record.phone_number || 'N/A'}</td>
-											<td>${fullName || 'N/A'}</td>
-											<td>${record.barangay || 'N/A'}</td>
-											<td>${record.purok || 'N/A'}</td>
-											<td style="max-width: 200px; word-wrap: break-word;">${record.message || 'N/A'}</td>
-											<td>${statusBadge}</td>
-										`;
+									row.innerHTML = `
+										<td>${sentDate.toLocaleString()}</td>
+										<td>${record.phone_number || 'N/A'}</td>
+										<td>${fullName || 'N/A'}</td>
+										<td>${record.barangay || 'N/A'}</td>
+										<td>${record.purok || 'N/A'}</td>
+										<td style="max-width: 300px; min-width: 200px; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; line-height: 1.4;">${record.message || 'N/A'}</td>
+										<td>${statusBadge}</td>
+									`;
 										tableBody.appendChild(row);
 									});
 								}
