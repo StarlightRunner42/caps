@@ -604,7 +604,7 @@ exports.generatePwdApplicationPdf = async (req, res) => {
       }
     };
 
-    const CONSISTENT_FONT_SIZE = 10; // Set consistent font size for all text fields
+    const CONSISTENT_FONT_SIZE = 8; // Set consistent font size for all text fields
 
     const setText = (fieldName, value = '') => {
       if (!fieldName) return;
@@ -1019,7 +1019,7 @@ exports.generateSeniorApplicationPdf = async (req, res) => {
       }
     };
 
-    const CONSISTENT_FONT_SIZE = 10; // Set consistent font size for all text fields
+    const CONSISTENT_FONT_SIZE = 8; // Set consistent font size for all text fields
 
     const setText = (fieldName, value = '') => {
       if (!fieldName) return;
@@ -1250,7 +1250,7 @@ exports.generateYouthApplicationPdf = async (req, res) => {
       }
     };
 
-    const CONSISTENT_FONT_SIZE = 10; // Set consistent font size for all text fields
+    const CONSISTENT_FONT_SIZE = 8; // Set consistent font size for all text fields
 
     const setText = (fieldName, value = '') => {
       if (!fieldName) return;
