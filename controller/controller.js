@@ -604,10 +604,15 @@ exports.generatePwdApplicationPdf = async (req, res) => {
       }
     };
 
+    const CONSISTENT_FONT_SIZE = 10; // Set consistent font size for all text fields
+
     const setText = (fieldName, value = '') => {
       if (!fieldName) return;
       try {
-        form.getTextField(fieldName).setText(value || '');
+        const field = form.getTextField(fieldName);
+        field.setText(value || '');
+        // Set consistent font size for this field
+        field.setFontSize(CONSISTENT_FONT_SIZE);
       } catch (err) {
         warnMissingField(`Text field "${fieldName}" not found`);
       }
@@ -1014,11 +1019,15 @@ exports.generateSeniorApplicationPdf = async (req, res) => {
       }
     };
 
+    const CONSISTENT_FONT_SIZE = 10; // Set consistent font size for all text fields
+
     const setText = (fieldName, value = '') => {
       if (!fieldName) return;
       try {
         const field = form.getTextField(fieldName);
         field.setText(String(value || ''));
+        // Set consistent font size for this field
+        field.setFontSize(CONSISTENT_FONT_SIZE);
       } catch (err) {
         warnMissingField(`Text field "${fieldName}" not found`);
       }
@@ -1071,8 +1080,9 @@ exports.generateSeniorApplicationPdf = async (req, res) => {
       setText('Text Field129', dobFormatted);
       setText('Text Field128', dobFormatted);
       setText('Text Field127', dobFormatted);
+    setText('BIRTHDATE', dobFormatted); // Add BIRTHDATE field
     }
-    
+     
     // Contact Information
     const primaryContact = Array.isArray(info.contacts) && info.contacts.length > 0 ? info.contacts[0] : null;
     setText('CONTACT', primaryContact?.phone || '');
@@ -1182,16 +1192,14 @@ exports.generateSeniorApplicationPdf = async (req, res) => {
       setCheckbox('OTHERS COMMUNITY SERCVICE', true);
       setCheckbox('OTHERS COMMUNITY SERVICE', true);
     }
-    
+
     // Try to flatten the form, but continue if it fails (some PDFs have broken references)
     try {
       form.flatten();
     } catch (flattenError) {
       console.warn('[Senior PDF] Could not flatten form, saving without flattening:', flattenError.message);
       // Continue without flattening - the form will still be filled
-    }
-    
-    const pdfBytes = await pdfDoc.save();
+    }    const pdfBytes = await pdfDoc.save();
     const safeLast = (name.last_name || 'Senior').replace(/\s+/g, '-');
     const safeFirst = (name.first_name || 'Record').replace(/\s+/g, '-');
     const filename = `Senior-${safeLast}-${safeFirst}.pdf`;
@@ -1242,11 +1250,15 @@ exports.generateYouthApplicationPdf = async (req, res) => {
       }
     };
 
+    const CONSISTENT_FONT_SIZE = 10; // Set consistent font size for all text fields
+
     const setText = (fieldName, value = '') => {
       if (!fieldName) return;
       try {
         const field = form.getTextField(fieldName);
         field.setText(String(value || ''));
+        // Set consistent font size for this field
+        field.setFontSize(CONSISTENT_FONT_SIZE);
       } catch (err) {
         warnMissingField(`Text field "${fieldName}" not found`);
       }
