@@ -863,30 +863,54 @@
 			
 			// Wait for DOM to be fully loaded
 			document.addEventListener('DOMContentLoaded', function() {
-				console.log('DOM loaded - initializing Generate Report button');
+				console.log('DOM loaded - initializing Print Application button');
 
-				const printApplicationBtn = document.getElementById('printApplicationBtn');
-
-				if (printApplicationBtn) {
-					printApplicationBtn.addEventListener('click', function() {
-						const recordId = this.dataset.pwdId;
-						if (!recordId) {
-							alert('Please open a PWD record before printing.');
-							return;
-						}
-
-						const pdfUrl = `/pwd/${recordId}/application-pdf`;
-						const pdfWindow = window.open(pdfUrl, '_blank', 'noopener');
-						
-						// More reliable popup detection: wait a moment to check if window was actually blocked
-						setTimeout(function() {
-							// Check if window is null/undefined or was closed immediately (indicates blocking)
-							if (!pdfWindow || (pdfWindow && pdfWindow.closed)) {
-								alert('Popup blocked! Please allow popups to view the PDF.');
-							}
-						}, 300);
+				// Use event delegation for print button to ensure it works even after modal operations
+				$(document).on('click', '#printApplicationBtn', function(e) {
+					e.preventDefault();
+					e.stopPropagation();
+					
+					// Get recordId from multiple sources for reliability
+					const $btn = $(this);
+					const recordId = $btn.data('pwd-id') || $btn.attr('data-pwd-id') || this.dataset.pwdId || this.getAttribute('data-pwd-id');
+					console.log('Print button clicked, PWD ID:', recordId);
+					console.log('Button disabled state:', this.disabled);
+					console.log('Button dataset:', this.dataset);
+					console.log('Button attributes:', {
+						'data-pwd-id': $btn.attr('data-pwd-id'),
+						'data-pwdId': $btn.data('pwd-id'),
+						'dataset.pwdId': this.dataset.pwdId
 					});
-				}
+					
+					if (!recordId) {
+						alert('Please open a PWD record before printing.');
+						return;
+					}
+					
+					if (this.disabled) {
+						alert('Print button is disabled. Please open a PWD record first.');
+						return;
+					}
+
+					const pdfUrl = `/pwd/${recordId}/application-pdf`;
+					console.log('Opening PDF URL:', pdfUrl);
+					
+					// Use link element method which is more reliable and less likely to be blocked
+					const link = document.createElement('a');
+					link.href = pdfUrl;
+					link.target = '_blank';
+					link.rel = 'noopener noreferrer';
+					link.style.display = 'none';
+					document.body.appendChild(link);
+					link.click();
+					
+					// Remove link after a short delay
+					setTimeout(function() {
+						if (document.body.contains(link)) {
+							document.body.removeChild(link);
+						}
+					}, 100);
+				});
 				
 				// Your existing code for other functionality...
 				// Get select elements
@@ -1029,28 +1053,44 @@
 					}
 				});
 
-				// VIEW MODAL CODE - FIXED VERSION
-				console.log('Initializing view buttons...');
-				const viewButtons = document.querySelectorAll('.view-btn');
-				console.log(`Found ${viewButtons.length} view buttons`);
+				// VIEW MODAL CODE - FIXED VERSION (using event delegation for DataTables compatibility)
+				console.log('Initializing view buttons with event delegation...');
 				
-				viewButtons.forEach(button => {
-					button.addEventListener('click', function() {
-						console.log('View button clicked');
-						try {
-							const pwdData = JSON.parse(this.getAttribute('data-pwd').replace(/&apos;/g, "'"));
-							console.log('PWD Data loaded:', pwdData);
+				// Use event delegation to handle view buttons (works even after DataTables redraws)
+				$(document).on('click', '.view-btn', function() {
+					console.log('View button clicked');
+					try {
+						const pwdData = JSON.parse($(this).attr('data-pwd').replace(/&apos;/g, "'"));
+						console.log('PWD Data loaded:', pwdData);
 
-							const recordId = pwdData._id || pwdData.id || this.getAttribute('data-pwd-id');
-							if (printApplicationBtn) {
-								if (recordId) {
-									printApplicationBtn.dataset.pwdId = recordId;
-									printApplicationBtn.removeAttribute('disabled');
-								} else {
-									printApplicationBtn.dataset.pwdId = '';
-									printApplicationBtn.setAttribute('disabled', 'disabled');
+						const recordId = pwdData._id || pwdData.id || $(this).attr('data-pwd-id');
+						console.log('View button clicked, setting recordId:', recordId);
+						
+						// Get fresh reference to print button inside the handler using jQuery
+						const $printBtn = $('#printApplicationBtn');
+						if ($printBtn.length) {
+							if (recordId) {
+								// Set data using multiple methods for maximum compatibility
+								$printBtn.data('pwd-id', recordId);  // jQuery data method
+								$printBtn.attr('data-pwd-id', recordId);  // HTML attribute
+								const printBtn = $printBtn[0];  // Get DOM element
+								if (printBtn) {
+									printBtn.dataset.pwdId = recordId;  // DOM dataset
 								}
+								$printBtn.prop('disabled', false);  // Enable button
+								console.log('Print button enabled with ID:', recordId);
+								console.log('Print button jQuery data:', $printBtn.data('pwd-id'));
+								console.log('Print button attr:', $printBtn.attr('data-pwd-id'));
+								console.log('Print button dataset:', printBtn ? printBtn.dataset.pwdId : 'N/A');
+							} else {
+								$printBtn.data('pwd-id', '');
+								$printBtn.removeAttr('data-pwd-id');
+								$printBtn.prop('disabled', true);
+								console.log('Print button disabled - no recordId found');
 							}
+						} else {
+							console.error('Print button not found!');
+						}
 							
 							// Basic Information
 							document.getElementById('displayFirstName').textContent = pwdData.first_name || 'N/A';
@@ -1182,7 +1222,6 @@
 							alert('Error loading PWD data: ' + e.message);
 						}
 					});
-				});
 
 				// Add cleanup handler for view modal to remove backdrop
 				$('#viewModal').on('hidden.bs.modal', function () {
@@ -1192,9 +1231,12 @@
 					$('body').removeClass('modal-open');
 					// Remove inline styles that might block interaction
 					$('body').css('padding-right', '');
-					if (printApplicationBtn) {
-						printApplicationBtn.dataset.pwdId = '';
-						printApplicationBtn.setAttribute('disabled', 'disabled');
+					// Get fresh reference to print button
+					const printBtn = document.getElementById('printApplicationBtn');
+					if (printBtn) {
+						printBtn.dataset.pwdId = '';
+						printBtn.removeAttribute('data-pwd-id');
+						printBtn.setAttribute('disabled', 'disabled');
 					}
 				});
 
