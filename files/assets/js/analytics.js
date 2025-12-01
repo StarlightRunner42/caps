@@ -540,9 +540,7 @@ async function generateSeniorCitizensReport() {
 </div>
 
 <div class="container">
-    <div class="text-center generated-date">
-        <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
-    </div>
+    
     
     <div class="header-wrapper">
         <img src="/assets/images/SilayLogo.jpg" class="logo-left">
@@ -567,7 +565,10 @@ async function generateSeniorCitizensReport() {
     </div>
 
     ${tableHtml}
-
+    
+    <div class="text-center generated-date">
+        <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
+    </div>
 </div>
 
 </body>
