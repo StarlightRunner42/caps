@@ -877,9 +877,14 @@
 
 						const pdfUrl = `/pwd/${recordId}/application-pdf`;
 						const pdfWindow = window.open(pdfUrl, '_blank', 'noopener');
-						if (!pdfWindow) {
-							alert('Popup blocked! Please allow popups to view the PDF.');
-						}
+						
+						// More reliable popup detection: wait a moment to check if window was actually blocked
+						setTimeout(function() {
+							// Check if window is null/undefined or was closed immediately (indicates blocking)
+							if (!pdfWindow || (pdfWindow && pdfWindow.closed)) {
+								alert('Popup blocked! Please allow popups to view the PDF.');
+							}
+						}, 300);
 					});
 				}
 				
@@ -899,8 +904,15 @@
 							// Open new window for report
 							const newWin = window.open('', '_blank', 'width=1200,height=800,scrollbars=yes');
 							
+							// More reliable popup detection: wait a moment to check if window was actually blocked
+							setTimeout(function() {
+								if (!newWin || (newWin && newWin.closed)) {
+									alert('Popup blocked! Please allow popups for this site to view the report.');
+								}
+							}, 300);
+							
+							// If window is null, don't proceed with writing content
 							if (!newWin) {
-								alert('Popup blocked! Please allow popups for this site to view the report.');
 								return;
 							}
 							
