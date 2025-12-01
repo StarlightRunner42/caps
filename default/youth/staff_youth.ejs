@@ -1006,73 +1006,7 @@ Thank you!</textarea>
 								});
 			});
 		</script>
-		<script>
-			// Convert EJS data to JavaScript object
-			const barangaysData = <%- JSON.stringify(barangays) %>;
 
-			document.addEventListener('DOMContentLoaded', function() {
-				const barangaySelect = document.getElementById('barangay-filter');
-				const purokSelect = document.getElementById('purok-filter');
-
-				// Populate Barangay options dynamically
-				if (barangaysData && typeof barangaysData === 'object') {
-					Object.keys(barangaysData).forEach(function(barangay) {
-						const option = document.createElement('option');
-						option.value = barangay;
-						option.textContent = barangay;
-						barangaySelect.appendChild(option);
-					});
-				}
-
-				// Get existing DataTable instance
-				var table = window.youthTable || $('#example').DataTable();
-
-				// Initialize purok dropdown as disabled
-				purokSelect.disabled = true;
-
-				// When Barangay changes, populate Purok and filter table
-				barangaySelect.addEventListener('change', function() {
-					const selectedBarangay = this.value;
-					purokSelect.innerHTML = '';
-
-					const defaultOption = document.createElement('option');
-					defaultOption.value = '';
-					defaultOption.textContent = selectedBarangay ? 'Select Purok' : 'First select a Barangay';
-					purokSelect.appendChild(defaultOption);
-
-					purokSelect.disabled = !selectedBarangay;
-
-					if (selectedBarangay && barangaysData[selectedBarangay]) {
-						const allOption = document.createElement('option');
-						allOption.value = 'all';
-						allOption.textContent = 'All Puroks';
-						purokSelect.appendChild(allOption);
-
-						barangaysData[selectedBarangay].forEach(function(purok) {
-							const option = document.createElement('option');
-							option.value = purok;
-							option.textContent = purok;
-							purokSelect.appendChild(option);
-						});
-					}
-
-					// Filter the table based on selected barangay (column index 3 after checkbox column)
-										table.columns(3).search(selectedBarangay || '').draw();
-										// Clear purok filter when barangay changes
-										table.columns(4).search('').draw();
-				});
-
-				// When Purok changes, filter table
-								purokSelect.addEventListener('change', function() {
-									const selectedPurok = this.value;
-									if (selectedPurok === 'all' || selectedPurok === '') {
-										table.columns(4).search('').draw();
-									} else {
-										table.columns(4).search(selectedPurok).draw();
-									}
-								});
-			});
-		</script>
 		
 		<!-- Action Buttons CSS -->
 		<style>
